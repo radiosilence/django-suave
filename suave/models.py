@@ -45,24 +45,17 @@ class Page(Displayable):
 
     @property
     def url(self):
-        if self.section == Section.objects.filter(live=True)[0]:
-            section_slug = ''
-        else:
-            section_slug = self.section.slug
+        kwargs = {}
+        require_section_slug = False
+        if self != self.section.pages.filter(live=True)[0]:
+            kwargs['page_slug'] = self.slug
+            require_section_slug = True
 
-        if self == self.section.pages.filter(live=True)[0]:
-            page_slug = ''
-        else:
-            page_slug = '/' + self.slug
+        if self.section != Section.objects.filter(live=True)[0] or \
+            require_section_slug:
+            kwargs['section_slug'] = self.section.slug
 
-        d = {}
-        if section_slug:
-            d['section_slug'] = section_slug
-        if page_slug:
-            d['page_slug'] = page_slug
-
-        url = reverse('page', kwargs=d)
-        return url
+        return reverse('suave:page', kwargs=kwargs)
 
     def __unicode__(self):
         return self.name

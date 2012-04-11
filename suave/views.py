@@ -9,6 +9,7 @@ from .models import Page, Section
 @pjaxtend()
 def page(request, section_slug=None, page_slug=None):
     """Show a page."""
+    print section_slug, page_slug
     try:
         if section_slug:
             section = Section.objects.filter(live=True).get(slug=section_slug)
