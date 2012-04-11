@@ -1,0 +1,12 @@
+*.log
+*.pyc
+*.sublime-project
+*/local_settings.py
+build/
+dist/
+*.db
+config.py
+*.un~
+manage.py
+*/local_settings.py
+*.egg-info/
