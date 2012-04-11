@@ -19,10 +19,13 @@ def page(request, section_slug=None, page_slug=None):
             page = section.pages.get(slug=page_slug)
         else:
             page = section.pages.filter(live=True)[0]
+
     except (Page.DoesNotExist, Section.DoesNotExist, IndexError):
         raise Http404
 
     return TemplateResponse(request, 'page.html', dict(
         page=page,
-        section=section
+        section=section,
+        nav_secondary=section.pages.filter(live=True).all(),
+        nav_secondary_selected=page
     ))
