@@ -21,10 +21,16 @@ def page(request, section_slug=None, page_slug=None):
         else:
             page = section.pages.filter(live=True)[0]
 
+        if page.template_override:
+            template = page.template_override
+        else:
+            template = 'page.html'
+    
+
     except (Page.DoesNotExist, Section.DoesNotExist, IndexError):
         raise Http404
 
-    return TemplateResponse(request, 'page.html', dict(
+    return TemplateResponse(request, template, dict(
         page=page,
         section=section,
         nav_secondary=section.pages.filter(live=True).all(),

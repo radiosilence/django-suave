@@ -43,6 +43,9 @@ class Page(Displayable):
     featured_image_description = models.CharField(max_length=255, null=True,
         blank=True)
 
+    template_override = models.CharField(max_length=255, null=True,
+        blank=True)
+
     @property
     def url(self):
         kwargs = {}
