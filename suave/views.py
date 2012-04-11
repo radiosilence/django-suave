@@ -1,9 +1,12 @@
 from django.http import Http404
 from django.template.response import TemplateResponse
 
+from djpjax import pjaxtend
+
 from .models import Page, Section
 
 
+@pjaxtend()
 def page(request, section_slug=None, page_slug=None):
     """Show a page."""
     try:

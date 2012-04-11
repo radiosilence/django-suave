@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ page.name }}</title>
+</head>
+<body>
+    <div id="main">
+    {% block content %}
+
+    {% endblock %}
+    </div>
+<script src="https://raw.github.com/defunkt/jquery-pjax/master/jquery.pjax.js"></script>
+<script>
+    $('a').pjax('#main');
+</script>
+</body>
+</html>

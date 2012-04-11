@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 class Displayable(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
     sort_index = models.IntegerField()
     live = models.BooleanField()
 
