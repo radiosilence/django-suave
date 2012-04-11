@@ -1,3 +1,5 @@
+dist/
+*egg-info*/
 static/
 !follit/static/
 *.db
