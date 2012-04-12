@@ -1,17 +1,44 @@
 import re
 from django.db import models
+from django.db.models.query import QuerySet
 from django.core.urlresolvers import reverse
 
+from model_utils import Choices
+from model_utils.managers import PassThroughManager
 
-class Displayable(models.Model):
-    name = models.CharField(max_length=255)
+
+class SiteEntityQuerySet(QuerySet):
+    def live(self):
+        return self.filter(status=SiteEntity.STATUS.live)
+
+
+class SiteEntity(models.Model):
+    STATUS = Choices(
+        ('draft', 'Draft'),
+        ('live', 'Live'),
+        ('deleted', 'Deleted')
+    )
+
+    title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     sort_index = models.IntegerField()
-    live = models.BooleanField()
+    status = models.CharField(choices=STATUS, default=STATUS.draft,
+        max_length=20)
+
+    objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
+
+    def __unicode__(self):
+        return self.title
 
 
-class Section(Displayable):
+class Displayable(SiteEntity):
+    body = models.TextField()
+
+
+class Section(SiteEntity):
     url_override = models.CharField(max_length=255, null=True, blank=True)
+
+    objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
 
     @property
     def url(self):
@@ -24,19 +51,15 @@ class Section(Displayable):
                 #       on sections.
                 return '/' + self.url_override
         try:
-            return self.pages.filter(live=True)[0].url
+            return self.pages.live()[0].url
         except IndexError:
             return "#"
-
-    def __unicode__(self):
-        return self.name
 
     class Meta:
         ordering = ['sort_index']
 
 
 class Page(Displayable):
-    content = models.TextField()
     section = models.ForeignKey(Section, related_name='pages')
     featured_image = models.CharField(max_length=255, null=True,
         blank=True)
@@ -46,22 +69,21 @@ class Page(Displayable):
     template_override = models.CharField(max_length=255, null=True,
         blank=True)
 
+    objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
+
     @property
     def url(self):
         kwargs = {}
         require_section_slug = False
-        if self != self.section.pages.filter(live=True)[0]:
+        if self != self.section.pages.live()[0]:
             kwargs['page_slug'] = self.slug
             require_section_slug = True
 
-        if self.section != Section.objects.filter(live=True)[0] or \
+        if self.section != Section.objects.live()[0] or \
             require_section_slug:
             kwargs['section_slug'] = self.section.slug
 
         return reverse('suave:page', kwargs=kwargs)
-
-    def __unicode__(self):
-        return self.name
 
     class Meta:
         ordering = ['sort_index']

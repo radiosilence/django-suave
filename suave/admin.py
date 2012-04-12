@@ -4,7 +4,7 @@ from .models import Page, Section
 
 
 class DisplayableAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("name",)}
+    prepopulated_fields = {"slug": ("title",)}
 
 
 class PageAdmin(DisplayableAdmin):

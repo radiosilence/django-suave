@@ -1,5 +1,17 @@
 {% extends parent %}
+{% load markup %}
 {% block content %}
-    <h1>{{ page.name }}</h1>
-    {{ page.content }}
+        {% block prehead %}{% endblock %}
+        {% block header %}
+            <header class="twelve columns alpha omega ">
+                <h1>{{ page.title }}</h1>
+            </header>
+        {% endblock %}
+        {% block posthead %}{% endblock %}
+        {% block body %}
+            <div class="twelve columns alpha omega page">
+                {{ page.body|markdown }}
+            </div>
+        {% endblock %}
+        {% block postbody %}{% endblock %}
 {% endblock %}
