@@ -13,7 +13,7 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('slug', self.gf('django.db.models.fields.SlugField')(max_length=255)),
-            ('sort_index', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('order', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
             ('status', self.gf('model_utils.fields.StatusField')(default='draft', max_length=100, no_check_for_status=True)),
         ))
         db.send_create_signal('suave', ['SiteEntity'])
@@ -67,7 +67,7 @@ class Migration(SchemaMigration):
             'siteentity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['suave.SiteEntity']", 'unique': 'True', 'primary_key': 'True'})
         },
         'suave.page': {
-            'Meta': {'ordering': "['sort_index']", 'object_name': 'Page', '_ormbases': ['suave.Displayable']},
+            'Meta': {'ordering': "['order']", 'object_name': 'Page', '_ormbases': ['suave.Displayable']},
             'displayable_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['suave.Displayable']", 'unique': 'True', 'primary_key': 'True'}),
             'featured_image': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'featured_image_description': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
@@ -80,7 +80,7 @@ class Migration(SchemaMigration):
             'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
         },
         'suave.section': {
-            'Meta': {'ordering': "['sort_index']", 'object_name': 'Section', '_ormbases': ['suave.SiteEntity']},
+            'Meta': {'ordering': "['order']", 'object_name': 'Section', '_ormbases': ['suave.SiteEntity']},
             'siteentity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['suave.SiteEntity']", 'unique': 'True', 'primary_key': 'True'}),
             'url_override': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'})
         },
@@ -88,7 +88,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'SiteEntity'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '255'}),
-            'sort_index': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'order': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'status': ('model_utils.fields.StatusField', [], {'default': "'draft'", 'max_length': '100', 'no_check_for_status': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         }

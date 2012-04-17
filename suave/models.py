@@ -24,7 +24,7 @@ class SiteEntity(models.Model):
 
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
-    sort_index = models.IntegerField(null=True, blank=True)
+    order = models.IntegerField(null=True, blank=True)
     status = StatusField()
 
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
@@ -58,7 +58,7 @@ class Section(SiteEntity):
             return "#"
 
     class Meta:
-        ordering = ['sort_index']
+        ordering = ['order']
 
 
 class Page(MPTTModel, Displayable):
@@ -91,4 +91,4 @@ class Page(MPTTModel, Displayable):
         return reverse('suave:page', kwargs=kwargs)
 
     class Meta:
-        ordering = ['sort_index']
+        ordering = ['order']
