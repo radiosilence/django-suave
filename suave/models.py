@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 
 from model_utils import Choices
 from model_utils.managers import PassThroughManager
+from model_utils.fields import StatusField
 
 
 class SiteEntityQuerySet(QuerySet):
@@ -21,9 +22,8 @@ class SiteEntity(models.Model):
 
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
-    sort_index = models.IntegerField()
-    status = models.CharField(choices=STATUS, default=STATUS.draft,
-        max_length=20)
+    sort_index = models.IntegerField(null=True, blank=True)
+    status = StatusField()
 
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
 
