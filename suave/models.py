@@ -3,6 +3,8 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.core.urlresolvers import reverse
 
+from mptt.models import MPTTModel, TreeForeignKey
+
 from model_utils import Choices
 from model_utils.managers import PassThroughManager
 from model_utils.fields import StatusField
@@ -59,7 +61,7 @@ class Section(SiteEntity):
         ordering = ['sort_index']
 
 
-class Page(Displayable):
+class Page(MPTTModel, Displayable):
     section = models.ForeignKey(Section, related_name='pages')
     featured_image = models.CharField(max_length=255, null=True,
         blank=True)
@@ -68,6 +70,9 @@ class Page(Displayable):
 
     template_override = models.CharField(max_length=255, null=True,
         blank=True)
+
+    parent = TreeForeignKey('self', null=True, blank=True,
+        related_name='children')
 
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
 
