@@ -3,8 +3,12 @@ from django.contrib import admin
 from .models import Page, Section
 
 
-class DisplayableAdmin(admin.ModelAdmin):
+class SiteEntityAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
+
+
+class DisplayableAdmin(SiteEntityAdmin):
+    pass
 
 
 class PageAdmin(DisplayableAdmin):
