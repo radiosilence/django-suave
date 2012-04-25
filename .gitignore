@@ -7,3 +7,4 @@ static/
 .svn/
 media/
 settings_local.py
+*.swp
