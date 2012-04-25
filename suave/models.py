@@ -9,6 +9,8 @@ from model_utils import Choices
 from model_utils.managers import PassThroughManager
 from model_utils.fields import StatusField
 
+from tinymce import models as tinymce_models
+
 
 class SiteEntityQuerySet(QuerySet):
     def live(self):
@@ -34,7 +36,7 @@ class SiteEntity(models.Model):
 
 
 class Displayable(SiteEntity):
-    body = models.TextField()
+    body = tinymce_models.HTMLField()
 
 
 class Section(SiteEntity):
