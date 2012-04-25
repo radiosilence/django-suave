@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 NAME = 'django-suave'
 
@@ -10,11 +10,8 @@ setup(
     url='https://github.com/radiosilence/django-suave',
     author='James Cleveland',
     author_email='jamescleveland@gmail.com',
-    packages=find_packages(),
+    packages=['suave'],
     include_package_data=True,
     license="LICENSE.txt",
-    package_data={
-        '': ['*.txt', '*.rst']
-    },
     install_requires=open('requirements.txt').read().split("\n")
 )
