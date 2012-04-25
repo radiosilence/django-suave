@@ -63,10 +63,6 @@ class Section(SiteEntity):
 
 class Page(MPTTModel, Displayable):
     section = models.ForeignKey(Section, related_name='pages')
-    featured_image = models.CharField(max_length=255, null=True,
-        blank=True)
-    featured_image_description = models.CharField(max_length=255, null=True,
-        blank=True)
 
     template_override = models.CharField(max_length=255, null=True,
         blank=True)
