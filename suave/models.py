@@ -21,7 +21,6 @@ class SiteEntity(models.Model):
     STATUS = Choices(
         ('draft', 'Draft'),
         ('live', 'Live'),
-        ('deleted', 'Deleted')
     )
 
     title = models.CharField(max_length=255)
@@ -90,3 +89,7 @@ class Page(MPTTModel, Displayable):
 
     class Meta:
         ordering = ['order']
+
+
+class Attachment(SiteEntity):
+    pass

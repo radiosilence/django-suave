@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+import reversion
+
 from .models import Page, Section
 
 
@@ -11,7 +13,7 @@ class DisplayableAdmin(SiteEntityAdmin):
     pass
 
 
-class PageAdmin(DisplayableAdmin):
+class PageAdmin(reversion.VersionAdmin, DisplayableAdmin):
     pass
 
 
