@@ -1,4 +1,3 @@
-import re
 from django.db import models
 from django.db.models.query import QuerySet
 from django.core.urlresolvers import reverse
