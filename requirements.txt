@@ -3,4 +3,4 @@ south
 django-mptt
 django-reversion
 django-tinymce
-
+python-memcached
