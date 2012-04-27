@@ -5,7 +5,7 @@ import reversion
 from .models import Page, Section
 
 
-class SiteEntityAdmin(admin.ModelAdmin):
+class SiteEntityAdmin(reversion.VersionAdmin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
@@ -13,7 +13,7 @@ class DisplayableAdmin(SiteEntityAdmin):
     pass
 
 
-class PageAdmin(reversion.VersionAdmin, DisplayableAdmin):
+class PageAdmin(DisplayableAdmin):
     pass
 
 
