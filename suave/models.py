@@ -41,33 +41,7 @@ class Displayable(SiteEntity):
     body = tinymce_models.HTMLField()
 
 
-class Section(SiteEntity):
-    url_override = models.CharField(max_length=255, null=True, blank=True)
-
-    objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
-
-    @property
-    def url(self):
-        if self.url_override:
-            if re.match(r'^(?:https?://)?(?:[\w]+\.)(?:\.?[\w]{2,})+$',
-                self.url_override):
-                return self.url_override
-            else:
-                # Todo: Make this more reliable for generating navigation based
-                #       on sections.
-                return '/' + self.url_override
-        try:
-            return self.pages.live()[0].url
-        except IndexError:
-            return "#"
-
-    class Meta:
-        ordering = ['order']
-
-
 class Page(MPTTModel, Displayable):
-    section = models.ForeignKey(Section, related_name='pages')
-
     template_override = models.CharField(max_length=255, null=True,
         blank=True)
 
@@ -78,17 +52,17 @@ class Page(MPTTModel, Displayable):
 
     @property
     def url(self):
-        kwargs = {}
-        require_section_slug = False
-        if self != self.section.pages.live()[0]:
-            kwargs['page_slug'] = self.slug
-            require_section_slug = True
+        if self.is_root_node():
+            return reverse('suave:page')
 
-        if self.section != Section.objects.live()[0] or \
-            require_section_slug:
-            kwargs['section_slug'] = self.section.slug
-
-        return reverse('suave:page', kwargs=kwargs)
+        crumbs = []
+        for ancestor in self.get_ancestors():
+            if ancestor.is_root_node():
+                continue
+            crumbs.append(ancestor.slug)
+        crumbs.append(self.slug)
+        return reverse('suave:page', kwargs=dict(
+            url='/'.join(crumbs)))
 
     class Meta:
         ordering = ['order']

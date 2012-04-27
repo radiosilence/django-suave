@@ -1,8 +1,9 @@
 from django.contrib import admin
 
+from mptt.admin import MPTTModelAdmin
 import reversion
 
-from .models import Page, Section
+from .models import Page
 
 
 class SiteEntityAdmin(reversion.VersionAdmin, admin.ModelAdmin):
@@ -13,13 +14,8 @@ class DisplayableAdmin(SiteEntityAdmin):
     pass
 
 
-class PageAdmin(DisplayableAdmin):
-    pass
-
-
-class SectionAdmin(DisplayableAdmin):
+class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
     pass
 
 
 admin.site.register(Page, PageAdmin)
-admin.site.register(Section, SectionAdmin)
