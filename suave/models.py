@@ -33,6 +33,9 @@ class SiteEntity(models.Model):
     def __unicode__(self):
         return self.title
 
+    class Meta:
+        ordering = ['order', 'title']
+
 
 class Displayable(SiteEntity):
     body = tinymce_models.HTMLField()
