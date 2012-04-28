@@ -29,6 +29,9 @@ class SiteEntity(models.Model):
 
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
 
+    def __str__(self):
+        return self.title
+
     def __unicode__(self):
         return self.title
 
