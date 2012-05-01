@@ -3,4 +3,10 @@ south
 django-mptt
 django-reversion
 django-tinymce
-python-memcached
+django-model-utils
+sorl-thumbnail
+django-pjax
+django-extensions
+django-widget-tweaks
+django-extensions
+ipython
