@@ -24,6 +24,7 @@ class SiteEntity(models.Model):
     )
 
     title = models.CharField(max_length=255)
+    identifier = models.CharField(max_length=255, null=True, blank=True)
     slug = models.SlugField(max_length=255)
     order = models.IntegerField(null=True, blank=True)
     status = StatusField()
