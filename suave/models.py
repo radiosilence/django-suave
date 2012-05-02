@@ -97,20 +97,14 @@ class Page(MPTTModel, Displayable):
 
 
 class Carousel(SiteEntity):
-    images = models.ManyToManyField(Attachment, related_name='carousels',
-        through='CarouselImage')
+    pass
 
 
 class CarouselImage(models.Model):
-    image = models.ForeignKey(Attachment)
     carousel = models.ForeignKey(Carousel)
-    title = models.CharField(max_length=255, blank=True, null=True)
+    image = ImageField(upload_to='carousel_img')
     description = models.TextField(blank=True)
-    order = models.IntegerField()
-
-    class Meta:
-        ordering = ['order']
-
+    order = models.IntegerField(default=0)
 
 class Nav(SiteEntity):
     items = models.ManyToManyField(Page, related_name='navs',
@@ -121,7 +115,7 @@ class NavItem(models.Model):
     page = models.ForeignKey(Page, related_name='navitems')
     nav = models.ForeignKey(Nav, related_name='navitems')
     show_children = models.BooleanField(default=True)
-    order = models.IntegerField(null=True, blank=True)
+    order = models.IntegerField(default=0)
     
     @property
     def show_id(self):
