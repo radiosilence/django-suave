@@ -30,6 +30,19 @@ class SiteEntity(models.Model):
     status = StatusField()
 
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
+    def save(self, *args, **kwargs):
+        model = self.__class__
+        
+        if self.order is None:
+            # Append
+            try:
+                last = model.objects.order_by('-order')[0]
+                self.order = last.order + 1
+            except IndexError:
+                # First row
+                self.order = 0
+        
+        return super(SiteEntity, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -38,7 +51,7 @@ class SiteEntity(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['order', 'title']
+        ordering = ['order']
 
 
 class Displayable(SiteEntity):

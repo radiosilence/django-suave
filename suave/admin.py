@@ -8,7 +8,16 @@ from .models import Page, Carousel, CarouselImage, Attachment, Nav, NavItem
 
 class SiteEntityAdmin(reversion.VersionAdmin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
+    list_editable = ['order']
+    list_display = ['title', 'slug', 'order']
+    class Media:
+        js = (
+            'js/jquery.min.js',
+            'js/jquery-ui.min.js',
+            'admin/js/list-reorder.js',
+        )
 
+    
 
 class DisplayableAdmin(SiteEntityAdmin):
     pass
