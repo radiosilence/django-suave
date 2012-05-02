@@ -121,7 +121,13 @@ class NavItem(models.Model):
     page = models.ForeignKey(Page, related_name='navitems')
     nav = models.ForeignKey(Nav, related_name='navitems')
     show_children = models.BooleanField(default=True)
-    order = models.IntegerField()
+    order = models.IntegerField(null=True, blank=True)
+    
+    @property
+    def show_id(self):
+        return self.pk
 
+    def __unicode__(self):
+        return unicode(self.page)
     class Meta:
         ordering = ['order']

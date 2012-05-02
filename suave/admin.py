@@ -15,8 +15,8 @@ class SiteEntityAdmin(reversion.VersionAdmin, admin.ModelAdmin):
             'js/jquery.min.js',
             'js/jquery-ui.min.js',
             'admin/js/list-reorder.js',
+            'admin/js/inline-reorder.js',
         )
-
     
 
 class DisplayableAdmin(SiteEntityAdmin):
@@ -37,6 +37,7 @@ admin.site.register(Attachment, AttachmentAdmin)
 
 class NavItemInline(admin.TabularInline):
     model = NavItem
+    extra = 0
 
 
 class NavAdmin(SiteEntityAdmin):
