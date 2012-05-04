@@ -8,8 +8,9 @@ from .models import Page, Carousel, CarouselImage, Attachment, Nav, NavItem
 
 class SiteEntityAdmin(reversion.VersionAdmin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
-    list_editable = ['order']
-    list_display = ['title', 'slug', 'order']
+    list_editable = ['order', 'status']
+    list_display = ['title', 'slug', 'status', 'order']
+
     class Media:
         js = (
             'js/jquery.min.js',
