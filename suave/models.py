@@ -30,9 +30,10 @@ class SiteEntity(models.Model):
     status = StatusField()
 
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
+
     def save(self, *args, **kwargs):
         model = self.__class__
-        
+
         if self.order is None:
             # Append
             try:
@@ -41,7 +42,7 @@ class SiteEntity(models.Model):
             except IndexError:
                 # First row
                 self.order = 0
-        
+
         return super(SiteEntity, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -106,6 +107,7 @@ class CarouselImage(models.Model):
     description = models.TextField(blank=True)
     order = models.IntegerField(default=0)
 
+
 class Nav(SiteEntity):
     items = models.ManyToManyField(Page, related_name='navs',
         through='NavItem')
@@ -116,12 +118,13 @@ class NavItem(models.Model):
     nav = models.ForeignKey(Nav, related_name='navitems')
     show_children = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
-    
+
     @property
     def show_id(self):
         return self.pk
 
     def __unicode__(self):
         return unicode(self.page)
+
     class Meta:
         ordering = ['order']

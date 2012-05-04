@@ -18,7 +18,7 @@ class SiteEntityAdmin(reversion.VersionAdmin, admin.ModelAdmin):
             'admin/js/list-reorder.js',
             'admin/js/inline-reorder.js',
         )
-    
+
 
 class DisplayableAdmin(SiteEntityAdmin):
     pass
