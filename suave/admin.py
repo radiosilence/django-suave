@@ -10,6 +10,8 @@ class SiteEntityAdmin(reversion.VersionAdmin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     list_editable = ['order', 'status']
     list_display = ['title', 'slug', 'status', 'order']
+    list_filter = ['status']
+    search_fields = ['title']
 
     class Media:
         js = (
