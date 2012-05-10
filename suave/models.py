@@ -25,8 +25,9 @@ class SiteEntity(models.Model):
 
     title = models.CharField(max_length=255)
     identifier = models.CharField(max_length=255, null=True, blank=True)
-    slug = models.SlugField(max_length=255)
     order = models.IntegerField(null=True, blank=True)
+    added = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     status = StatusField()
 
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
@@ -53,10 +54,15 @@ class SiteEntity(models.Model):
 
     class Meta:
         ordering = ['order']
+        abstract = True
 
 
 class Displayable(SiteEntity):
     body = tinymce_models.HTMLField()
+    slug = models.SlugField(max_length=255)
+
+    class Meta:
+        abstract = True
 
 
 class Attachment(SiteEntity):

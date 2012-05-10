@@ -8,27 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'SiteEntity'
-        db.create_table('suave_siteentity', (
+        # Adding model 'Attachment'
+        db.create_table('suave_attachment', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('identifier', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=255)),
             ('order', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('added', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('updated', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
             ('status', self.gf('model_utils.fields.StatusField')(default='draft', max_length=100, no_check_for_status=True)),
-        ))
-        db.send_create_signal('suave', ['SiteEntity'])
-
-        # Adding model 'Displayable'
-        db.create_table('suave_displayable', (
-            ('siteentity_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['suave.SiteEntity'], unique=True, primary_key=True)),
-            ('body', self.gf('tinymce.models.HTMLField')()),
-        ))
-        db.send_create_signal('suave', ['Displayable'])
-
-        # Adding model 'Attachment'
-        db.create_table('suave_attachment', (
-            ('siteentity_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['suave.SiteEntity'], unique=True, primary_key=True)),
             ('type', self.gf('django.db.models.fields.CharField')(default='image', max_length=45)),
             ('image', self.gf('sorl.thumbnail.fields.ImageField')(max_length=100, null=True, blank=True)),
             ('file', self.gf('django.db.models.fields.files.FileField')(max_length=100, null=True, blank=True)),
@@ -37,7 +25,15 @@ class Migration(SchemaMigration):
 
         # Adding model 'Page'
         db.create_table('suave_page', (
-            ('displayable_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['suave.Displayable'], unique=True, primary_key=True)),
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('identifier', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+            ('order', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('added', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('updated', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('status', self.gf('model_utils.fields.StatusField')(default='draft', max_length=100, no_check_for_status=True)),
+            ('body', self.gf('tinymce.models.HTMLField')()),
+            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=255)),
             ('template_override', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
             ('parent', self.gf('mptt.fields.TreeForeignKey')(blank=True, related_name='children', null=True, to=orm['suave.Page'])),
             ('lft', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
@@ -49,7 +45,13 @@ class Migration(SchemaMigration):
 
         # Adding model 'Carousel'
         db.create_table('suave_carousel', (
-            ('siteentity_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['suave.SiteEntity'], unique=True, primary_key=True)),
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('identifier', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+            ('order', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('added', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('updated', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('status', self.gf('model_utils.fields.StatusField')(default='draft', max_length=100, no_check_for_status=True)),
         ))
         db.send_create_signal('suave', ['Carousel'])
 
@@ -65,7 +67,13 @@ class Migration(SchemaMigration):
 
         # Adding model 'Nav'
         db.create_table('suave_nav', (
-            ('siteentity_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['suave.SiteEntity'], unique=True, primary_key=True)),
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('identifier', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+            ('order', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('added', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('updated', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('status', self.gf('model_utils.fields.StatusField')(default='draft', max_length=100, no_check_for_status=True)),
         ))
         db.send_create_signal('suave', ['Nav'])
 
@@ -80,12 +88,6 @@ class Migration(SchemaMigration):
         db.send_create_signal('suave', ['NavItem'])
 
     def backwards(self, orm):
-        # Deleting model 'SiteEntity'
-        db.delete_table('suave_siteentity')
-
-        # Deleting model 'Displayable'
-        db.delete_table('suave_displayable')
-
         # Deleting model 'Attachment'
         db.delete_table('suave_attachment')
 
@@ -106,15 +108,27 @@ class Migration(SchemaMigration):
 
     models = {
         'suave.attachment': {
-            'Meta': {'ordering': "['order']", 'object_name': 'Attachment', '_ormbases': ['suave.SiteEntity']},
+            'Meta': {'ordering': "['order']", 'object_name': 'Attachment'},
+            'added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'identifier': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'image': ('sorl.thumbnail.fields.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'siteentity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['suave.SiteEntity']", 'unique': 'True', 'primary_key': 'True'}),
-            'type': ('django.db.models.fields.CharField', [], {'default': "'image'", 'max_length': '45'})
+            'order': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'status': ('model_utils.fields.StatusField', [], {'default': "'draft'", 'max_length': '100', 'no_check_for_status': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'type': ('django.db.models.fields.CharField', [], {'default': "'image'", 'max_length': '45'}),
+            'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         },
         'suave.carousel': {
-            'Meta': {'ordering': "['order']", 'object_name': 'Carousel', '_ormbases': ['suave.SiteEntity']},
-            'siteentity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['suave.SiteEntity']", 'unique': 'True', 'primary_key': 'True'})
+            'Meta': {'ordering': "['order']", 'object_name': 'Carousel'},
+            'added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'identifier': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'order': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'status': ('model_utils.fields.StatusField', [], {'default': "'draft'", 'max_length': '100', 'no_check_for_status': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         },
         'suave.carouselimage': {
             'Meta': {'object_name': 'CarouselImage'},
@@ -124,15 +138,16 @@ class Migration(SchemaMigration):
             'image': ('sorl.thumbnail.fields.ImageField', [], {'max_length': '100'}),
             'order': ('django.db.models.fields.IntegerField', [], {'default': '0'})
         },
-        'suave.displayable': {
-            'Meta': {'ordering': "['order']", 'object_name': 'Displayable', '_ormbases': ['suave.SiteEntity']},
-            'body': ('tinymce.models.HTMLField', [], {}),
-            'siteentity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['suave.SiteEntity']", 'unique': 'True', 'primary_key': 'True'})
-        },
         'suave.nav': {
-            'Meta': {'ordering': "['order']", 'object_name': 'Nav', '_ormbases': ['suave.SiteEntity']},
+            'Meta': {'ordering': "['order']", 'object_name': 'Nav'},
+            'added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'identifier': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'items': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'navs'", 'symmetrical': 'False', 'through': "orm['suave.NavItem']", 'to': "orm['suave.Page']"}),
-            'siteentity_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['suave.SiteEntity']", 'unique': 'True', 'primary_key': 'True'})
+            'order': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'status': ('model_utils.fields.StatusField', [], {'default': "'draft'", 'max_length': '100', 'no_check_for_status': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         },
         'suave.navitem': {
             'Meta': {'ordering': "['order']", 'object_name': 'NavItem'},
@@ -143,23 +158,22 @@ class Migration(SchemaMigration):
             'show_children': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
         },
         'suave.page': {
-            'Meta': {'ordering': "['order']", 'object_name': 'Page', '_ormbases': ['suave.Displayable']},
-            'displayable_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['suave.Displayable']", 'unique': 'True', 'primary_key': 'True'}),
-            'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': "orm['suave.Page']"}),
-            'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            'template_override': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
-        },
-        'suave.siteentity': {
-            'Meta': {'ordering': "['order']", 'object_name': 'SiteEntity'},
+            'Meta': {'ordering': "['order']", 'object_name': 'Page'},
+            'added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'body': ('tinymce.models.HTMLField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'identifier': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
+            'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'order': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': "orm['suave.Page']"}),
+            'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '255'}),
             'status': ('model_utils.fields.StatusField', [], {'default': "'draft'", 'max_length': '100', 'no_check_for_status': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+            'template_override': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
+            'updated': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         }
     }
 
