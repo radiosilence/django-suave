@@ -19,5 +19,6 @@ def page(request, url='/'):
     if not template:
         template = 'page.html'
     return TemplateResponse(request, template, dict(
+        active=page,
         page=page
     ))
