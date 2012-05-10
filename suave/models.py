@@ -58,7 +58,7 @@ class SiteEntity(models.Model):
 
 
 class Displayable(SiteEntity):
-    body = tinymce_models.HTMLField()
+    body = tinymce_models.HTMLField(null=True, blank=True)
     slug = models.SlugField(max_length=255)
 
     class Meta:
