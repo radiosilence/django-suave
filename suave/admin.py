@@ -7,9 +7,8 @@ from .models import Page, Carousel, CarouselImage, Attachment, Nav, NavItem
 
 
 class SiteEntityAdmin(reversion.VersionAdmin, admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("title",)}
     list_editable = ['order', 'status']
-    list_display = ['title', 'slug', 'status', 'order']
+    list_display = ['title', 'status', 'order']
     list_filter = ['status']
     search_fields = ['title']
 
@@ -23,7 +22,8 @@ class SiteEntityAdmin(reversion.VersionAdmin, admin.ModelAdmin):
 
 
 class DisplayableAdmin(SiteEntityAdmin):
-    pass
+    list_display = ['title', 'slug', 'status', 'order']
+    prepopulated_fields = {"slug": ("title",)}
 
 
 class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
