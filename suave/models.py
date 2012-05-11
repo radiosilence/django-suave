@@ -62,6 +62,7 @@ class Displayable(SiteEntity):
     slug = models.SlugField(max_length=255)
 
     class Meta:
+        ordering = ['order']
         abstract = True
 
 
