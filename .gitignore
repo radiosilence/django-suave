@@ -1,7 +1,7 @@
 dist/
 *egg-info*/
 static/
-!follit/static/
+!suave/static/
 *.db
 *.pyc
 .svn/
