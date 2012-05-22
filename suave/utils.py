@@ -12,7 +12,7 @@ def get_page_from_url(url):
         if url[0] != '/':
             url = '/' + url
         try:
-            page = Page.objects.live().get(url=url)
+            page = Page.objects.select_related().live().get(url=url)
         except Page.DoesNotExist:
             page = False
 
