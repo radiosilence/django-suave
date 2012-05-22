@@ -27,7 +27,8 @@ class DisplayableAdmin(SiteEntityAdmin):
 
 
 class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
-    pass
+    list_display = ['title', 'url', 'status', 'order']
+    exclude = ['url']
 
 admin.site.register(Page, PageAdmin)
 

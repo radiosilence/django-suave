@@ -90,11 +90,12 @@ class Page(MPTTModel, Displayable):
     def save(self, *args, **kwargs):
         old_url = copy(self.url)
         self.update_url()
-        if self.url != old_url:
-            for child in self.children.all():
-                child.save()
 
-        return super(SiteEntity, self).save(*args, **kwargs)
+        super(Page, self).save(*args, **kwargs)
+
+        if self.url != old_url:
+            for child in self.get_children().all():
+                child.save()
 
     def update_url(self, save=True):
         self.url = self._url
@@ -104,14 +105,11 @@ class Page(MPTTModel, Displayable):
         if self.is_root_node():
             return reverse('suave:page')
 
-        crumbs = []
-        for ancestor in self.get_ancestors():
-            if ancestor.is_root_node():
-                continue
-            crumbs.append(ancestor.slug)
-        crumbs.append(self.slug)
-        return reverse('suave:page', kwargs=dict(
-            url='/'.join(crumbs)))
+        url = '{0}{1}/'.format(
+            self.parent.url,
+            self.slug
+        )
+        return url
 
     class Meta:
         ordering = ['order']
