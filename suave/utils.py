@@ -8,14 +8,13 @@ def get_page_from_url(url):
     if page == None:
         if url[-1] != '/':
             url = url + '/'
-        if url == '/':
-            page = Page.objects.all()[0].get_root()
-        else:
+
+        if url[0] != '/':
+            url = '/' + url
+        try:
+            page = Page.objects.live().get(url=url)
+        except Page.DoesNotExist:
             page = False
-            slug = url.split('/')[-2]
-            for attempt in Page.objects.filter(slug=slug).live().all():
-                if attempt.url.strip('/') == url.strip('/'):
-                    page = attempt
-                    break
+
     cache.set(key, page, 60)
     return page

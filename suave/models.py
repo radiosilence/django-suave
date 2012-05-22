@@ -1,3 +1,4 @@
+from copy import copy
 from django.db import models
 from django.db.models.query import QuerySet
 from django.core.urlresolvers import reverse
@@ -83,11 +84,23 @@ class Page(MPTTModel, Displayable):
 
     parent = TreeForeignKey('self', null=True, blank=True,
         related_name='children')
-
+    url = models.CharField(max_length=255, null=True, blank=True)
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
 
+    def save(self, *args, **kwargs):
+        old_url = copy(self.url)
+        self.update_url()
+        if self.url != old_url:
+            for child in self.children.all():
+                child.save()
+
+        return super(SiteEntity, self).save(*args, **kwargs)
+
+    def update_url(self, save=True):
+        self.url = self._url
+
     @property
-    def url(self):
+    def _url(self):
         if self.is_root_node():
             return reverse('suave:page')
 
