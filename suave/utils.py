@@ -1,20 +1,18 @@
+from django.http import Http404
 from django.core.cache import cache
+
 from .models import Page
 
 
 def get_page_from_url(url):
-    key = 'suave:page_at_url:%s' % url
-    page = cache.get(key)
-    if page == None:
-        if url[-1] != '/':
-            url = url + '/'
+    if url[-1] != '/':
+        url = url + '/'
 
-        if url[0] != '/':
-            url = '/' + url
-        try:
-            page = Page.objects.select_related().live().get(url=url)
-        except Page.DoesNotExist:
-            page = False
+    if url[0] != '/':
+        url = '/' + url
+    try:
+        return Page.objects.select_related().live().get(url=url)
+    except Page.DoesNotExist:
+        raise Http404
 
-    cache.set(key, page, 60)
-    return page
+
