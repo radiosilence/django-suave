@@ -13,12 +13,22 @@ from sorl.thumbnail import ImageField
 from tinymce import models as tinymce_models
 
 
+class Ordered(models.Model):
+    order = models.IntegerField(null=True, blank=True)
+    added = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['order']
+        abstract = True
+
+
 class SiteEntityQuerySet(QuerySet):
     def live(self):
         return self.filter(status=SiteEntity.STATUS.live)
 
 
-class SiteEntity(models.Model):
+class SiteEntity(Ordered):
     STATUS = Choices(
         ('draft', 'Draft'),
         ('live', 'Live'),
@@ -26,9 +36,6 @@ class SiteEntity(models.Model):
 
     title = models.CharField(max_length=255)
     identifier = models.CharField(max_length=255, null=True, blank=True)
-    order = models.IntegerField(null=True, blank=True)
-    added = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
     status = StatusField()
 
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
@@ -45,7 +52,7 @@ class SiteEntity(models.Model):
                 # First row
                 self.order = 0
 
-        return super(SiteEntity, self).save(*args, **kwargs)
+        super(SiteEntity, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -54,7 +61,6 @@ class SiteEntity(models.Model):
         return self.title
 
     class Meta:
-        ordering = ['order']
         abstract = True
 
 
@@ -63,7 +69,6 @@ class Displayable(SiteEntity):
     slug = models.SlugField(max_length=255)
 
     class Meta:
-        ordering = ['order']
         abstract = True
 
 

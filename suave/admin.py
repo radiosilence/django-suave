@@ -6,11 +6,9 @@ import reversion
 from .models import Page, Carousel, CarouselImage, Attachment, Nav, NavItem
 
 
-class SiteEntityAdmin(reversion.VersionAdmin, admin.ModelAdmin):
-    list_editable = ['order', 'status']
-    list_display = ['title', 'status', 'order']
-    list_filter = ['status']
-    search_fields = ['title']
+class OrderedAdmin(admin.ModelAdmin):
+    list_editable = ['order']
+    list_display = ['order']
 
     class Media:
         js = (
@@ -19,6 +17,13 @@ class SiteEntityAdmin(reversion.VersionAdmin, admin.ModelAdmin):
             'admin/js/list-reorder.js',
             'admin/js/inline-reorder.js',
         )
+
+
+class SiteEntityAdmin(reversion.VersionAdmin, OrderedAdmin):
+    list_editable = ['order', 'status']
+    list_display = ['title', 'status', 'order']
+    list_filter = ['status']
+    search_fields = ['title']
 
 
 class DisplayableAdmin(SiteEntityAdmin):
