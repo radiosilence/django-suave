@@ -2,6 +2,8 @@ from copy import copy
 from django.db import models
 from django.db.models.query import QuerySet
 from django.core.urlresolvers import reverse
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
 
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -92,16 +94,6 @@ class Page(MPTTModel, Displayable):
     url = models.CharField(max_length=255, null=True, blank=True)
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
 
-    def save(self, *args, **kwargs):
-        old_url = copy(self.url)
-        self.update_url()
-
-        super(Page, self).save(*args, **kwargs)
-
-        if self.url != old_url:
-            for child in self.get_children().all():
-                child.save()
-
     def update_url(self, save=True):
         self.url = self._url
 
@@ -118,6 +110,19 @@ class Page(MPTTModel, Displayable):
 
     class Meta:
         ordering = ['order']
+
+
+@receiver(pre_save, sender=Page)
+def page_url_update(sender, instance, **kwargs):
+    instance.old_url = instance.url
+    instance.update_url()
+
+
+@receiver(post_save, sender=Page)
+def page_child_url_update(sender, instance, **kwargs):
+    if instance.old_url != instance.url:
+        for child in instance.get_children().all():
+            child.save()
 
 
 class Carousel(SiteEntity):
