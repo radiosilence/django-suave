@@ -16,7 +16,7 @@ from tinymce import models as tinymce_models
 
 
 class Ordered(models.Model):
-    order = models.IntegerField(null=True, blank=True)
+    order = models.IntegerField(null=True, blank=True, db_index=True)
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -38,7 +38,7 @@ class SiteEntity(Ordered):
 
     title = models.CharField(max_length=255)
     identifier = models.CharField(max_length=255, null=True, blank=True)
-    status = StatusField()
+    status = StatusField(db_index=True)
 
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
 
@@ -68,7 +68,7 @@ class SiteEntity(Ordered):
 
 class Displayable(SiteEntity):
     body = tinymce_models.HTMLField(null=True, blank=True)
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, db_index=True)
 
     class Meta:
         abstract = True
