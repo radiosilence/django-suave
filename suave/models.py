@@ -156,3 +156,9 @@ class NavItem(models.Model):
 
     class Meta:
         ordering = ['order']
+
+
+class Redirect(Ordered):
+    old_url = models.CharField(max_length=255)
+    new_url = models.CharField(max_length=255, blank=True)
+    permanent = models.BooleanField(default=True)
