@@ -94,6 +94,52 @@ class Page(MPTTModel, Displayable):
     url = models.CharField(max_length=255, null=True, blank=True)
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
 
+    _page_title = models.CharField(max_length=255, blank=True, null=True)
+
+    _meta_keywords = models.TextField(blank=True, null=True)
+    _meta_description = models.TextField(blank=True, null=True)
+
+    @property
+    def page_title(self):
+        if self._page_title:
+            return self._page_title
+        else:
+            return self.title
+
+    def meta_keywords():
+        def fget(self):
+            if self._meta_keywords:
+                return self._meta_keywords
+            elif self.parent:
+                return self.parent.meta_keywords
+            else:
+                return False
+
+        def fset(self, value):
+            self._meta_keywords = value
+
+        def fdel(self):
+            del self._meta_keywords
+        return locals()
+    meta_keywords = property(**meta_keywords())
+
+    def meta_description():
+        def fget(self):
+            if self._meta_description:
+                return self._meta_description
+            elif self.parent:
+                return self.parent.meta_description
+            else:
+                return False
+
+        def fset(self, value):
+            self._meta_description = value
+
+        def fdel(self):
+            del self._meta_description
+        return locals()
+    meta_description = property(**meta_description())
+
     def update_url(self, save=True):
         self.url = self._url
 
