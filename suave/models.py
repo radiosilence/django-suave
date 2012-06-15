@@ -90,7 +90,10 @@ class MetaInfo(models.Model):
             elif self.parent:
                 return self.parent.meta_keywords
             else:
-                return False
+                try:
+                    return Page.objects.get(slug='home').meta_keywords
+                except Page.DoesNotExist:
+                    return False
 
         def fset(self, value):
             self._meta_keywords = value
@@ -107,7 +110,10 @@ class MetaInfo(models.Model):
             elif self.parent:
                 return self.parent.meta_description
             else:
-                return False
+                try:
+                    return Page.objects.get(slug='home').meta_description
+                except Page.DoesNotExist:
+                    return False
 
         def fset(self, value):
             self._meta_description = value
