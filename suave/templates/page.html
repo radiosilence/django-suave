@@ -1,5 +1,7 @@
 {% extends parent %}
-{% block title %}{{ page.title }}{% endblock %}
+{% block title %}{{ page.page_title }}{% endblock %}
+{% block meta_description %}{{ page.meta_description }}{% endblock %}
+{% block meta_keywords %}{{ page.meta_keywords }}{% endblock %}
 {% block content %}
         {% block prehead %}{% endblock %}
         {% block header %}
