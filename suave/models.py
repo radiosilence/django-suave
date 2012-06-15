@@ -87,13 +87,16 @@ class MetaInfo(models.Model):
         def fget(self):
             if self._meta_keywords:
                 return self._meta_keywords
-            elif self.parent:
-                return self.parent.meta_keywords
-            else:
-                try:
-                    return Page.objects.get(slug='home').meta_keywords
-                except Page.DoesNotExist:
-                    return False
+            try:
+                if self.parent:
+                    return self.parent.meta_keywords
+            except AttributeError:
+                pass
+
+            try:
+                return Page.objects.get(url='/').meta_keywords
+            except Page.DoesNotExist:
+                return False
 
         def fset(self, value):
             self._meta_keywords = value
@@ -107,13 +110,16 @@ class MetaInfo(models.Model):
         def fget(self):
             if self._meta_description:
                 return self._meta_description
-            elif self.parent:
-                return self.parent.meta_description
-            else:
-                try:
-                    return Page.objects.get(slug='home').meta_description
-                except Page.DoesNotExist:
-                    return False
+            try:
+                if self.parent:
+                    return self.parent.meta_description
+            except AttributeError:
+                pass
+
+            try:
+                return Page.objects.get(url='/').meta_description
+            except Page.DoesNotExist:
+                return False
 
         def fset(self, value):
             self._meta_description = value
