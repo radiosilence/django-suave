@@ -66,38 +66,15 @@ class SiteEntity(Ordered):
         abstract = True
 
 
-class Displayable(SiteEntity):
-    body = tinymce_models.HTMLField(null=True, blank=True)
-    slug = models.SlugField(max_length=255, db_index=True)
+class MetaInfo(models.Model):
+    _page_title = models.CharField(max_length=255, blank=True, null=True,
+        verbose_name="Page Title", help_text='This will override the "title"'
+            + ' value and corresponds to the &lt;title&gt; tag of the page.')
 
-    class Meta:
-        abstract = True
-
-
-class Attachment(SiteEntity):
-    TYPE = Choices(
-        ('image', 'Image'),
-        ('video', 'Video'),
-        ('misc', 'Miscellaneous')
-    )
-    type = models.CharField(max_length=45, choices=TYPE, default=TYPE.image)
-    image = ImageField(upload_to='uploads', null=True, blank=True)
-    file = models.FileField(upload_to='uploads', null=True, blank=True)
-
-
-class Page(MPTTModel, Displayable):
-    template_override = models.CharField(max_length=255, null=True,
-        blank=True)
-
-    parent = TreeForeignKey('self', null=True, blank=True,
-        related_name='children')
-    url = models.CharField(max_length=255, null=True, blank=True)
-    objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
-
-    _page_title = models.CharField(max_length=255, blank=True, null=True)
-
-    _meta_keywords = models.TextField(blank=True, null=True)
-    _meta_description = models.TextField(blank=True, null=True)
+    _meta_keywords = models.TextField(blank=True, null=True,
+        verbose_name="Meta Keywords")
+    _meta_description = models.TextField(blank=True, null=True,
+        verbose_name="Meta Description")
 
     @property
     def page_title(self):
@@ -139,6 +116,38 @@ class Page(MPTTModel, Displayable):
             del self._meta_description
         return locals()
     meta_description = property(**meta_description())
+
+    class Meta:
+        abstract = True
+
+
+class Displayable(SiteEntity):
+    body = tinymce_models.HTMLField(null=True, blank=True)
+    slug = models.SlugField(max_length=255, db_index=True)
+
+    class Meta:
+        abstract = True
+
+
+class Attachment(SiteEntity):
+    TYPE = Choices(
+        ('image', 'Image'),
+        ('video', 'Video'),
+        ('misc', 'Miscellaneous')
+    )
+    type = models.CharField(max_length=45, choices=TYPE, default=TYPE.image)
+    image = ImageField(upload_to='uploads', null=True, blank=True)
+    file = models.FileField(upload_to='uploads', null=True, blank=True)
+
+
+class Page(MPTTModel, Displayable, MetaInfo):
+    template_override = models.CharField(max_length=255, null=True,
+        blank=True)
+
+    parent = TreeForeignKey('self', null=True, blank=True,
+        related_name='children')
+    url = models.CharField(max_length=255, null=True, blank=True)
+    objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
 
     def update_url(self, save=True):
         self.url = self._url
