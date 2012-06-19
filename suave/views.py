@@ -13,10 +13,6 @@ from .utils import get_page_from_url
 @pjaxtend()
 def page(request, url='/'):
     """Show a page."""
-    pre_routes = pre_route.send(sender=request, url=url)
-    for reciever, response in pre_routes:
-        if response:
-            return response
 
     try:
         page = get_page_from_url(url)
