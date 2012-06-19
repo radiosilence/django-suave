@@ -2,7 +2,7 @@ from .models import pre_route
 
 
 class PreRouteMiddleWare(object):
-    def process_request(self, request):
+    def process_view(self, request, *args, **kwargs):
         url = request.path.strip('/')
         if url == '':
             url = '/'
