@@ -1,4 +1,3 @@
-from copy import copy
 import django.dispatch
 from django.db import models
 from django.db.models.query import QuerySet
