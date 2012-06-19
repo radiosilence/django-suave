@@ -10,4 +10,4 @@ class PreRouteMiddleWare(object):
         for reciever, response in pre_routes:
             if response:
                 return response
-            return None
+        return None
