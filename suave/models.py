@@ -1,4 +1,5 @@
 from copy import copy
+import django.dispatch
 from django.db import models
 from django.db.models.query import QuerySet
 from django.core.urlresolvers import reverse
@@ -229,3 +230,6 @@ class Redirect(Ordered):
     old_url = models.CharField(max_length=255)
     new_url = models.CharField(max_length=255, blank=True)
     permanent = models.BooleanField(default=True)
+
+pre_route = django.dispatch.Signal(providing_args=['url'])
+post_route = django.dispatch.Signal(providing_args=['url'])

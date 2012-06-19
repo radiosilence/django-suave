@@ -1,7 +1,26 @@
-from django.http import Http404
-from django.core.cache import cache
+import sys
+from functools import wraps
 
-from .models import Page
+from django.http import Http404
+from django.conf import settings
+from django.utils.importlib import import_module
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
+
+from .models import Page, pre_route, post_route
+
+
+def pre_url(route_url):
+    def outer(f):
+        @wraps(f)
+        def wrapper(sender, url, **kwargs):
+            if route_url == url:
+                return f(request=sender, url=url)
+            else:
+                return False
+        pre_route.connect(wrapper)
+        return wrapper
+    return outer
 
 
 def get_page_from_url(url):
