@@ -9,7 +9,6 @@ from .models import Redirect, pre_route, post_route
 from .utils import get_page_from_url
 
 
-@cache_page(60)
 @pjaxtend()
 def page(request, url='/'):
     """Show a page."""
