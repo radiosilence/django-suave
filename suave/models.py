@@ -230,5 +230,14 @@ class Redirect(Ordered):
     new_url = models.CharField(max_length=255, blank=True)
     permanent = models.BooleanField(default=True)
 
+
+class Image(Ordered):
+    image = ImageField(upload_to='uploads')
+    alt = models.TextField(null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+
 pre_route = django.dispatch.Signal(providing_args=['url'])
 post_route = django.dispatch.Signal(providing_args=['url'])
