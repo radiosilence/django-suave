@@ -214,7 +214,7 @@ class NavItem(MPTTModel, Ordered):
         ('static', 'Static')
     )
     type = models.CharField(max_length=15, choices=TYPE, default=TYPE.menu)
-    text = models.CharField(max_length=127, blank=True)
+    text = models.CharField(max_length=127, blank=True, null=True)
 
     parent = TreeForeignKey('self', null=True, blank=True,
         related_name='children')
