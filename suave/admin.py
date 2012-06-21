@@ -47,6 +47,7 @@ admin.site.register(Attachment, AttachmentAdmin)
 
 class NavItemAdmin(MPTTModelAdmin, OrderedAdmin):
     list_display = ['title', 'url', 'type', 'order']
+    mptt_indent_field = "title"
 
 admin.site.register(NavItem, NavItemAdmin)
 
