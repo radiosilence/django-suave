@@ -159,7 +159,6 @@ class Page(MPTTModel, Displayable, MetaInfo):
     parent = TreeForeignKey('self', null=True, blank=True,
         related_name='children')
     url = models.CharField(max_length=255, null=True, blank=True)
-    objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
 
     def update_url(self, save=True):
         self.url = self._url
@@ -204,22 +203,64 @@ class CarouselImage(models.Model):
 
 
 class Nav(SiteEntity):
-    items = models.ManyToManyField(Page, related_name='navs',
-        through='NavItem')
+    pass
 
 
-class NavItem(models.Model):
-    page = models.ForeignKey(Page, related_name='navitems')
-    nav = models.ForeignKey(Nav, related_name='navitems')
-    show_children = models.BooleanField(default=True)
-    order = models.IntegerField(default=0)
+class NavItem(MPTTModel, Ordered):
+    TYPE = Choices(
+        ('menu', 'Menu'),
+        ('page', 'Page'),
+        ('dynamic', 'Dynamic'),
+        ('static', 'Static')
+    )
+    type = models.CharField(max_length=15, choices=TYPE, default=TYPE.menu)
+    text = models.CharField(max_length=127, blank=True)
+
+    parent = TreeForeignKey('self', null=True, blank=True,
+        related_name='children')
+
+    page = models.ForeignKey(Page, related_name='navitems', null=True,
+        blank=True)
+    page_show_children = models.BooleanField(default=True)
+
+    dynamic_name = models.CharField(max_length=255, blank=True, null=True)
+    dynamic_args = models.TextField(blank=True, null=True)
+
+    static_url = models.CharField(max_length=255, blank=True, null=True)
 
     @property
-    def show_id(self):
-        return self.pk
+    def url(self):
+        if self.type == NavItem.TYPE.page:
+            return self.page.url
+        elif self.type == NavItem.TYPE.dynamic:
+            args = {}
+            for arg in self.dynamic_args.split(';'):
+                k, v = arg.split(':')
+                args[k] = v
+            try:
+                return reverse(self.dynamic_name, kwargs=args)
+            except:
+                return '#'
+        else:
+            return self.static_url
+
+    @property
+    def title(self):
+        if not self.text and self.type == NavItem.TYPE.page:
+            return self.page.title
+        elif self.text:
+            return self.text
+        else:
+            return 'Nav Item #{}'.format(self.id)
+
+    @property
+    def navs(self):
+        subitems = self.get_children()
+        if self.type == NavItem.TYPE.page:
+            subitems.extend(self.page.children.live())
 
     def __unicode__(self):
-        return unicode(self.page)
+        return u'{}'.format(self.title)
 
     class Meta:
         ordering = ['order']

@@ -45,17 +45,10 @@ class AttachmentAdmin(SiteEntityAdmin):
 admin.site.register(Attachment, AttachmentAdmin)
 
 
-class NavItemInline(admin.TabularInline):
-    model = NavItem
-    extra = 0
+class NavItemAdmin(MPTTModelAdmin, OrderedAdmin):
+    list_display = ['title', 'url', 'type', 'order']
 
-
-class NavAdmin(SiteEntityAdmin):
-    inlines = [
-        NavItemInline
-    ]
-
-admin.site.register(Nav, NavAdmin)
+admin.site.register(NavItem, NavItemAdmin)
 
 
 class CarouselImageInline(admin.TabularInline):
