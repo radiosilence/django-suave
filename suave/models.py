@@ -27,7 +27,7 @@ class Ordered(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['order']
+        ordering = ('order', )
         abstract = True
 
 
@@ -186,7 +186,7 @@ class Page(MPTTModel, Displayable, MetaInfo):
         return url
 
     class Meta:
-        ordering = ['order']
+        ordering = ('order',)
 
 Page._meta.get_field('body').verbose_name = _('page content')
 
@@ -276,7 +276,7 @@ class NavItem(MPTTModel, Ordered):
         return u'{}'.format(self.title)
 
     class Meta:
-        ordering = ['order']
+        ordering = ('order',)
 
 
 class Redirect(Ordered):
@@ -304,6 +304,7 @@ class Image(Ordered):
 
     class Meta:
         abstract = True
+        ordering = ('order',)
 
 
 pre_route = django.dispatch.Signal(providing_args=['url'])
