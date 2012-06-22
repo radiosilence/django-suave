@@ -1,0 +1,20 @@
+.checkgroup li, .multifilter li {
+    list-style-type: none;
+}
+
+.checkgroup label {
+    margin-left: 10px;
+}
+
+a.kill {
+    margin-left: 5px;
+    margin-top: 7px;
+    width: 10px;
+    height: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    float: right;
+    background-image: url(/static/admin/img/icon_deletelink.gif);
+    text-indent: -999999px;
+}
