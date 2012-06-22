@@ -8,8 +8,9 @@ from .models import Page, Carousel, CarouselImage, Attachment, Nav, NavItem, \
 
 
 class OrderedAdmin(admin.ModelAdmin):
-    list_editable = ['order']
-    list_display = ['order']
+    list_editable = ('order',)
+    list_display = ('order',)
+    exclude = ('order',)
 
     class Media:
         js = (
@@ -24,6 +25,7 @@ class SiteEntityAdmin(reversion.VersionAdmin, OrderedAdmin):
     list_editable = ['order', 'status']
     list_display = ['title', 'status', 'order']
     list_filter = ['status']
+    exclude = OrderedAdmin.exclude + ('identifier',)
     search_fields = ['title']
 
 
