@@ -136,7 +136,8 @@ class MetaInfo(models.Model):
 
 
 class Displayable(SiteEntity):
-    body = tinymce_models.HTMLField(null=True, blank=True)
+    body = tinymce_models.HTMLField(null=True, blank=True,
+        verbose_name=_('content'))
     slug = models.SlugField(max_length=255, db_index=True)
 
     class Meta:
@@ -182,6 +183,8 @@ class Page(MPTTModel, Displayable, MetaInfo):
 
     class Meta:
         ordering = ['order']
+
+Page._meta.get_field('body').verbose_name = _('page content')
 
 
 @receiver(pre_save, sender=Page)
