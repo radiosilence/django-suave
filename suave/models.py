@@ -293,7 +293,7 @@ class Image(Ordered):
     def admin_thumbnail(self):
         try:
             return mark_safe('<img src="{}"/>'.format(
-                get_thumbnail(self.image, '200x100', crop='center',
+                get_thumbnail(self.image, '160x90', crop='center',
                     quality=100).url
             ))
         except ThumbnailError:
