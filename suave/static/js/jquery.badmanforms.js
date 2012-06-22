@@ -1,4 +1,23 @@
 /* --------------------------------
+ * GENERIC TING
+ * ------------------------------ */
+
+function init_special_select(element, type) {
+    old = element.parent().parent().find('div.' + type);
+    old.remove();
+    var controls = jQuery('<div/>', {
+        class: type,
+    });
+    jQuery('<ul/>').appendTo(controls);
+    hide = jQuery('<div/>').appendTo(controls).hide();
+    controls.prependTo(element.parent());
+    element.addClass('orig');
+    element.appendTo(hide);
+    return controls;
+}
+
+
+/* --------------------------------
  * MULTIFILTER
  * ------------------------------ */
 function killa(li) {
