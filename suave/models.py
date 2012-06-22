@@ -4,6 +4,7 @@ from django.db.models.query import QuerySet
 from django.core.urlresolvers import reverse
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
+from django.utils.translation import ugettext as _
 
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -16,7 +17,8 @@ from tinymce import models as tinymce_models
 
 
 class Ordered(models.Model):
-    order = models.IntegerField(null=True, blank=True, db_index=True)
+    order = models.IntegerField(null=True, blank=True, db_index=True,
+        verbose_name=_('display order'))
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -278,7 +280,7 @@ class Redirect(Ordered):
 
 class Image(Ordered):
     image = ImageField(upload_to='uploads')
-    alt = models.TextField(null=True, blank=True)
+    alt = models.CharField(max_length=511, null=True, blank=True)
 
     class Meta:
         abstract = True
