@@ -74,9 +74,9 @@ class MetaInfo(models.Model):
             + ' value and corresponds to the &lt;title&gt; tag of the page.')
 
     _meta_keywords = models.TextField(blank=True, null=True,
-        verbose_name="Meta Keywords")
+        verbose_name=_("Meta Keywords"))
     _meta_description = models.TextField(blank=True, null=True,
-        verbose_name="Meta Description")
+        verbose_name=_("Meta Description"), help_text='max 156 characters')
 
     @property
     def page_title(self):
