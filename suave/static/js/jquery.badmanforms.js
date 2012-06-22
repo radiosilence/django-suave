@@ -10,7 +10,7 @@ function init_special_select(element, type) {
     });
     jQuery('<ul/>').appendTo(controls);
     hide = jQuery('<div/>').appendTo(controls).hide();
-    controls.prependTo(element.parent());
+    controls.insertBefore(element);
     element.addClass('orig');
     element.appendTo(hide);
     return controls;
