@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block title %}{{ title }} | {% trans 'Suave site admin' %}{% endblock %}
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'admin/css/suave.css '%}"/>
+{% endblock %}
+{% block branding %}
+    <h1 id="site-name">{% trans 'Suave administration' %}</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
