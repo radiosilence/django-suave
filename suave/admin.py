@@ -3,8 +3,8 @@ from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 import reversion
 
-from .models import Page, Carousel, CarouselImage, Attachment, Nav, NavItem, \
-    Redirect
+from .models import (Page, Carousel, CarouselImage, Attachment, Nav, NavItem,
+    Redirect, Image)
 
 
 class OrderedAdmin(admin.ModelAdmin):
@@ -69,5 +69,12 @@ admin.site.register(Carousel, CarouselAdmin)
 
 class RedirectAdmin(OrderedAdmin):
     list_display = ['old_url', 'new_url', 'order']
+
+
+class ImageInline(admin.TabularInline):
+    model = Image
+    fields = ('admin_thumbnail', 'image', 'alt', 'order')
+    readonly_fields = ('admin_thumbnail', )
+
 
 admin.site.register(Redirect, RedirectAdmin)

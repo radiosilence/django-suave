@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
+from django.utils.safestring import mark_safe
 
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -13,6 +14,9 @@ from model_utils.managers import PassThroughManager
 from model_utils.fields import StatusField
 
 from sorl.thumbnail import ImageField
+from sorl.thumbnail.helpers import ThumbnailError
+from sorl.thumbnail import get_thumbnail
+
 from tinymce import models as tinymce_models
 
 
@@ -284,6 +288,19 @@ class Redirect(Ordered):
 class Image(Ordered):
     image = ImageField(upload_to='uploads')
     alt = models.CharField(max_length=511, null=True, blank=True)
+
+    @property
+    def admin_thumbnail(self):
+        try:
+            return mark_safe('<img src="{}"/>'.format(
+                get_thumbnail(self.image, '200x100', crop='center',
+                    quality=100).url
+            ))
+        except ThumbnailError:
+            return ''
+
+    def __str__(self):
+        return mark_safe(self.image.url)
 
     class Meta:
         abstract = True
