@@ -160,6 +160,10 @@ class Page(MPTTModel, Displayable, MetaInfo):
         related_name='children')
     url = models.CharField(max_length=255, null=True, blank=True)
 
+    # Because we're not directly inheriting from Displayable, we need to make
+    # sure the default manager is set.
+    objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
+
     def update_url(self, save=True):
         self.url = self._url
 
