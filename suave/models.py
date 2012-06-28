@@ -264,7 +264,6 @@ class NavItem(MPTTModel, Ordered):
                     args[k] = v
                 except ValueError:
                     pass
-            print args
             try:
                 return reverse(self.dynamic_name, kwargs=args)
             except:
