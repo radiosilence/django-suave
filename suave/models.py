@@ -20,11 +20,17 @@ from sorl.thumbnail import get_thumbnail
 from tinymce import models as tinymce_models
 
 
-class Ordered(models.Model):
-    order = models.IntegerField(null=True, blank=True, db_index=True,
-        verbose_name=_('display order'))
+class Dated(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class Ordered(Dated):
+    order = models.IntegerField(null=True, blank=True, db_index=True,
+        verbose_name=_('display order'))
 
     class Meta:
         ordering = ('order', )
@@ -314,3 +320,18 @@ class Image(Ordered):
 
 pre_route = django.dispatch.Signal(providing_args=['url'])
 post_route = django.dispatch.Signal(providing_args=['url'])
+
+
+class ContentBlock(SiteEntity):
+    body = tinymce_models.HTMLField(null=True, blank=True)
+
+    class Meta:
+        abstract = True
+    
+class PageContent(ContentBlock):
+    page = models.ForeignKey(Page, null=True, blank=True,
+        related_name='content')
+
+    class Meta:
+        verbose_name = 'block of page content'
+        verbose_name_plural = 'blocks of page content'

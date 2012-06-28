@@ -4,12 +4,15 @@ from mptt.admin import MPTTModelAdmin
 import reversion
 
 from .models import (Page, Carousel, CarouselImage, Attachment, Nav, NavItem,
-    Redirect, Image)
+    Redirect, Image, PageContent)
 
 
-class OrderedAdmin(admin.ModelAdmin):
+class DatedAdmin(admin.ModelAdmin):
+    pass
+
+class OrderedAdmin(DatedAdmin):
     list_editable = ('order',)
-    list_display = ('order',)
+    list_display = DatedAdmin.list_display + ('order',)
     exclude = ('order',)
 
     class Media:
@@ -78,3 +81,9 @@ class ImageInline(admin.TabularInline):
 
 
 admin.site.register(Redirect, RedirectAdmin)
+
+
+class PageContentAdmin(SiteEntityAdmin):
+    exclude = OrderedAdmin.exclude
+
+admin.site.register(PageContent, PageContentAdmin)
