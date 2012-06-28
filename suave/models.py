@@ -259,8 +259,12 @@ class NavItem(MPTTModel, Ordered):
         elif self.type == NavItem.TYPE.dynamic:
             args = {}
             for arg in self.dynamic_args.split(';'):
-                k, v = arg.split(':')
-                args[k] = v
+                try:
+                    k, v = arg.split(':')
+                    args[k] = v
+                except ValueError:
+                    pass
+            print args
             try:
                 return reverse(self.dynamic_name, kwargs=args)
             except:
