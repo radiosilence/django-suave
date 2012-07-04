@@ -61,7 +61,10 @@ class SiteEntity(Ordered):
             # Append
             try:
                 last = model.objects.order_by('-order')[0]
-                self.order = last.order + 1
+                last_order = last.order
+                if not last_order:
+                    last_order = model.objects.all().count()
+                self.order = last_order
             except IndexError:
                 # First row
                 self.order = 0
