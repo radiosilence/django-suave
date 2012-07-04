@@ -106,6 +106,9 @@ class MetaInfo(models.Model):
                 pass
 
             try:
+                if hasattr(self, 'url'):
+                    if self.url == '/':
+                        return False
                 return Page.objects.get(url='/').meta_keywords
             except Page.DoesNotExist:
                 return False
@@ -129,6 +132,9 @@ class MetaInfo(models.Model):
                 pass
 
             try:
+                if hasattr(self, 'url'):
+                    if self.url == '/':
+                        return False
                 return Page.objects.get(url='/').meta_description
             except Page.DoesNotExist:
                 return False
