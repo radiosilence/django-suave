@@ -2,12 +2,13 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.template.defaultfilters import slugify
 
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         admin = settings.ADMINS[0]
-        username = admin[0]
+        username = slugify(admin[0])
         email = admin[1]
         password = User.objects.make_random_password(length=14)
 
