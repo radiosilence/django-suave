@@ -7,9 +7,16 @@ from django.template.defaultfilters import slugify
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        admin = settings.ADMINS[0]
-        username = slugify(admin[0])
-        email = admin[1]
+        name, email = settings.ADMINS[0]
+        names = name.split(' ')
+        print names
+        if len(names) > 1:
+            username = ''.join(
+                [c[0].lower() for c in names[:-1]]) + names[-1].lower()
+            first_name = names[0]
+            last_name = names[-1]
+        else:
+            username = slugify(name)
         password = User.objects.make_random_password(length=14)
 
         try:
@@ -19,6 +26,10 @@ class Command(BaseCommand):
             u = User.objects.create_user(username, email, password)
             u.is_staff = True
             u.is_superuser = True
+            if first_name:
+                u.first_name = first_name
+            if last_name:
+                u.last_name = last_name
             u.save()
             print 'Created admin with username {} and password {}'.format(
                 username,
