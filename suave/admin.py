@@ -25,21 +25,21 @@ class OrderedAdmin(DatedAdmin):
 
 
 class SiteEntityAdmin(reversion.VersionAdmin, OrderedAdmin):
-    list_editable = ['order', 'status']
-    list_display = ['title', 'status', 'order']
-    list_filter = ['status']
+    list_editable = ('order', 'status')
+    list_display = ('title', 'status', 'order')
+    list_filter = ('status',)
     exclude = OrderedAdmin.exclude + ('identifier',)
-    search_fields = ['title']
+    search_fields = ('title',)
 
 
 class DisplayableAdmin(SiteEntityAdmin):
-    list_display = ['title', 'slug', 'status', 'order']
+    list_display = ('title', 'slug', 'status', 'order')
     prepopulated_fields = {"slug": ("title",)}
 
 
 class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
-    list_display = ['title', 'url', 'status', 'order']
-    exclude = ['url']
+    list_display = ('title', 'url', 'status', 'order')
+    exclude = ('url',)
 
 admin.site.register(Page, PageAdmin)
 
@@ -51,7 +51,7 @@ admin.site.register(Attachment, AttachmentAdmin)
 
 
 class NavItemAdmin(MPTTModelAdmin, OrderedAdmin):
-    list_display = ['title', 'url', 'type', 'order']
+    list_display = ('title', 'url', 'type', 'order')
     mptt_indent_field = "title"
 
 admin.site.register(NavItem, NavItemAdmin)
@@ -71,7 +71,7 @@ admin.site.register(Carousel, CarouselAdmin)
 
 
 class RedirectAdmin(OrderedAdmin):
-    list_display = ['old_url', 'new_url', 'order']
+    list_display = ('old_url', 'new_url', 'order')
 
 
 class ImageInline(admin.TabularInline):
