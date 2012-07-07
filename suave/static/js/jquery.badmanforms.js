@@ -1,4 +1,12 @@
 (function($) {
+
+    $.fn.xeach = function(callback) {
+        for(var i=0,len=this.length; value=this[i], i<len; i++) {
+            callback.apply(value);
+        }
+    };
+
+
     /* --------------------------------
      * GENERIC TING
      * ------------------------------ */
@@ -40,7 +48,7 @@
             text: '- Select One -'
         });
         option.appendTo(select);
-        $.each(options, function() {
+        options.xeach(function() {
             $this = $(this);
             var option = jQuery('<option/>', {
                 value: this.value,
@@ -63,8 +71,9 @@
         var orig = $('select.orig', controls);
         var ul = $('ul', controls);
 
-        $('ul li', controls).each(function(k, v) {
-            var select = $('select', $(v));
+        $('ul li', controls).xeach(function() {
+            $this = $(this);
+            var select = $('select', $this);
             if (select.val() > 0) {
             } else {
                 select.closest('li').remove();
@@ -74,13 +83,13 @@
 
 
         var o = [];
-        $('ul li', controls).each(function(k, v) {
-            var li = $(v);
-            var select = li.find('select');
+        $('ul li', controls).xeach(function(v) {
+            var $this = $(this);
+            var select = $this.find('select');
             if (select.val() != -1) {
                 o.push(select.val());
-                if ($('a', li).length == 0) {
-                    killa(li);
+                if ($('a', $this).length == 0) {
+                    killa($this);
                 }
             }
         });
@@ -112,15 +121,16 @@
     $.fn.multifilter = function(config) {
         config = config || {};
 
-        this.each(function() {
+        this.xeach(function() {
             var $this = $(this)
               , options = $('option', $this)
               , selected = $('option:selected', $this)
               , controls = init_special_select($this, 'multifilter')
               ;
 
-            $.each(selected, function(k, v) {
-                var li = create_dropdown(options, v);
+            selected.xeach(function() {
+                var $this = $(this);
+                var li = create_dropdown(options, this);
                 li.appendTo($('ul', controls));
             })
             var li = create_dropdown(options);
@@ -186,19 +196,16 @@
             }));
         }
     };
-
-
     $.fn.checkgroup = function(config) {
         config = config || {};
-
-        this.each(function() {
+        this.xeach(function() {
             var $this = $(this)
               , options = $('option', $this)
               , selected = $('option:selected', $this)
               , controls = init_special_select($this, 'checkgroup')
               ;
 
-            $.each(options, function() {
+            options.xeach(function() {
                 var $this = $(this);
                 title = $this.text();
                 $('ul', controls).append(create_check(
