@@ -40,13 +40,13 @@
             text: '- Select One -'
         });
         option.appendTo(select);
-        $.each(options, function(k, v) {
-            v = $(v);
+        $.each(options, function() {
+            $this = $(this);
             var option = jQuery('<option/>', {
-                value: v.val(),
-                text: v.text(),
+                value: this.value,
+                text: $this.text(),
             });
-            if (v.val() == selected.value) {
+            if (this.value == selected.value) {
                 option.attr('selected', true);
             }
             option.appendTo(select);
@@ -198,11 +198,12 @@
               , controls = init_special_select($this, 'checkgroup')
               ;
 
-            $.each(options, function(k, option) {
-                title = $(option).text();
+            $.each(options, function() {
+                var $this = $(this);
+                title = $this.text();
                 $('ul', controls).append(create_check(
-                    option.value,
-                    option.selected,
+                    this.value,
+                    this.selected,
                     title, $this
                 ));
             });
