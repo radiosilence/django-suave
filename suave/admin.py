@@ -58,12 +58,12 @@ admin.site.register(NavItem, NavItemAdmin)
 
 
 class ImageCarouselImageInline(admin.TabularInline):
-    model = CarouselImage
+    model = ImageCarouselImage
 
 
 class ImageCarouselAdmin(admin.ModelAdmin):
     inlines = [
-        CarouselImageInline
+        ImageCarouselImageInline
     ]
 
 
