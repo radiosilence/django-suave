@@ -1,4 +1,54 @@
-(function($) {
+(function($, undefined) {
+
+    /* --------------------------------
+     * LIMIT SELECTS BASED ON OBJECT
+     * --------------------------------*/
+
+    $.fn.selimit = function(reference, selector_child, selector_group) {
+        if (!selector_group) {
+            selector_group = 'body';
+        }
+        var limit = function() {
+            var $this = $(this);
+            var parent_sel = $this.find('option:selected');
+            var $child = $this.closest(selector_group).find(selector_child);
+            var child = $child[0];
+            if (parent_sel.length > 0){
+                parent_sel = parent_sel[0].value
+                if (parent_sel == '') {
+                    parent_sel = -1;
+                }
+            } else {
+                return false;
+            }
+            var selected = $child.find('option:selected')[0];
+
+            var contacts = reference[parent_sel];
+            if ($.inArray(parseInt(selected.value), contacts) == -1) {
+                $child.val('');
+            }
+            $.each($child.find('option'), function(k, option) {
+                if ($.inArray(parseInt(option.value), contacts) !== -1 || !option.value) {
+                    $(option).show();
+                } else {
+                    $(option).hide();
+                }
+            });
+            if (parent_sel == -1) {
+                $child.attr('disabled', 'disabled');
+            } else {
+                $child.removeAttr('disabled');
+            }
+        }
+        this.each(limit);
+        this.each(function() {
+            $(this).on('change', limit);
+        })
+    };
+
+    /* --------------------------------
+     * FAST EACHTING
+     * --------------------------------*/
 
     $.fn.xeach = function(callback) {
         for(var i=0,len=this.length; value=this[i], i<len; i++) {
