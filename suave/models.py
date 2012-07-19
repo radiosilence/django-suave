@@ -320,7 +320,7 @@ class Image(Ordered):
                 get_thumbnail(self.image, '160x90', crop='center',
                     quality=100).url
             ))
-        except ThumbnailError:
+        except (IOError, ThumbnailError):
             return ''
 
     def __str__(self):
