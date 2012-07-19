@@ -3,8 +3,8 @@ from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 import reversion
 
-from .models import (Page, Carousel, CarouselImage, Attachment, Nav, NavItem,
-    Redirect, Image, PageContent)
+from .models import (Page, ImageCarousel, ImageCarouselImage, Attachment, Nav,
+    NavItem, Redirect, Image, PageContent)
 
 
 class DatedAdmin(admin.ModelAdmin):
@@ -57,17 +57,17 @@ class NavItemAdmin(MPTTModelAdmin, OrderedAdmin):
 admin.site.register(NavItem, NavItemAdmin)
 
 
-class CarouselImageInline(admin.TabularInline):
+class ImageCarouselImageInline(admin.TabularInline):
     model = CarouselImage
 
 
-class CarouselAdmin(admin.ModelAdmin):
+class ImageCarouselAdmin(admin.ModelAdmin):
     inlines = [
         CarouselImageInline
     ]
 
 
-admin.site.register(Carousel, CarouselAdmin)
+admin.site.register(ImageCarousel, ImageCarouselAdmin)
 
 
 class RedirectAdmin(OrderedAdmin):

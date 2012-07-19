@@ -224,12 +224,12 @@ def page_child_url_update(sender, instance, **kwargs):
             child.save()
 
 
-class Carousel(SiteEntity):
+class ImageCarousel(SiteEntity):
     pass
 
 
-class CarouselImage(models.Model):
-    carousel = models.ForeignKey(Carousel)
+class ImageCarouselImage(models.Model):
+    carousel = models.ForeignKey(ImageCarousel)
     image = ImageField(upload_to='carousel_img')
     description = models.TextField(blank=True)
     order = models.IntegerField(default=0)
