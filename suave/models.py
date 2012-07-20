@@ -42,7 +42,7 @@ class SiteEntityQuerySet(QuerySet):
         return self.filter(status=SiteEntity.STATUS.live)
 
 
-class SiteEntity(Ordered):
+class SiteEntity(Dated):
     STATUS = Choices(
         ('draft', 'Draft'),
         ('live', 'Live'),
@@ -205,8 +205,6 @@ class Page(MPTTModel, Displayable, MetaInfo):
         )
         return url
 
-    class Meta:
-        ordering = ('order',)
 
 Page._meta.get_field('body').verbose_name = _('page content')
 
@@ -239,7 +237,7 @@ class Nav(SiteEntity):
     pass
 
 
-class NavItem(MPTTModel, Ordered):
+class NavItem(MPTTModel, Dated):
     TYPE = Choices(
         ('menu', 'Menu'),
         ('page', 'Page'),
@@ -260,6 +258,10 @@ class NavItem(MPTTModel, Ordered):
     dynamic_args = models.TextField(blank=True, null=True)
 
     static_url = models.CharField(max_length=255, blank=True, null=True)
+
+    @property
+    def ordered_children(self):
+        return self.children.order_by('order')
 
     @property
     def url(self):
@@ -298,8 +300,6 @@ class NavItem(MPTTModel, Ordered):
     def __unicode__(self):
         return u'{}'.format(self.title)
 
-    class Meta:
-        ordering = ('order',)
 
 
 class Redirect(Ordered):
@@ -340,7 +340,7 @@ class ContentBlock(SiteEntity):
 
     class Meta:
         abstract = True
-    
+
 class PageContent(ContentBlock):
     page = models.ForeignKey(Page, null=True, blank=True,
         related_name='content')

@@ -3,12 +3,13 @@ from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 import reversion
 
-from .models import (Page, ImageCarousel, ImageCarouselImage, Attachment, Nav,
+from .models import (Page, ImageCarousel, ImageCarouselImage, Nav,
     NavItem, Redirect, Image, PageContent)
 
 
 class DatedAdmin(admin.ModelAdmin):
     pass
+
 
 class OrderedAdmin(DatedAdmin):
     list_editable = ('order',)
@@ -24,34 +25,39 @@ class OrderedAdmin(DatedAdmin):
         )
 
 
-class SiteEntityAdmin(reversion.VersionAdmin, OrderedAdmin):
-    list_editable = ('order', 'status')
-    list_display = ('title', 'status', 'order')
+class SiteEntityAdmin(reversion.VersionAdmin):
+    list_editable = ('status', )
+    list_display = ('title', 'status')
     list_filter = ('status',)
-    exclude = OrderedAdmin.exclude + ('identifier',)
+    exclude = ('identifier',)
     search_fields = ('title',)
+
+    class Media:
+        js = ()
+
+
+class OrderedEntityAdmin(SiteEntityAdmin):
+    list_editable = SiteEntityAdmin.list_editable + OrderedAdmin.list_editable
+    list_display = DatedAdmin.list_display + ('status', 'order',)
+    exclude = SiteEntityAdmin.exclude + OrderedAdmin.exclude
+
+    Media = OrderedAdmin.Media
 
 
 class DisplayableAdmin(SiteEntityAdmin):
-    list_display = ('title', 'slug', 'status', 'order')
+    list_display = ('title', 'slug', 'status')
     prepopulated_fields = {"slug": ("title",)}
 
 
 class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
-    list_display = ('title', 'url', 'status', 'order')
+    list_display = ('title', 'url', 'status')
     exclude = ('url',)
 
 admin.site.register(Page, PageAdmin)
 
 
-class AttachmentAdmin(SiteEntityAdmin):
-    pass
-
-admin.site.register(Attachment, AttachmentAdmin)
-
-
-class NavItemAdmin(MPTTModelAdmin, OrderedAdmin):
-    list_display = ('title', 'url', 'type', 'order')
+class NavItemAdmin(MPTTModelAdmin):
+    list_display = ('title', 'url', 'type')
     mptt_indent_field = "title"
 
 admin.site.register(NavItem, NavItemAdmin)
@@ -84,6 +90,6 @@ admin.site.register(Redirect, RedirectAdmin)
 
 
 class PageContentAdmin(SiteEntityAdmin):
-    exclude = OrderedAdmin.exclude
+    pass
 
 admin.site.register(PageContent, PageContentAdmin)
