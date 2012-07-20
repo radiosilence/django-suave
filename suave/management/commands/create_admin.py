@@ -9,7 +9,6 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         name, email = settings.ADMINS[0]
         names = name.split(' ')
-        print names
         if len(names) > 1:
             username = ''.join(
                 [c[0].lower() for c in names[:-1]]) + names[-1].lower()
