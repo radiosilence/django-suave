@@ -7,18 +7,25 @@ from .models import (Page, ImageCarousel, ImageCarouselImage, Nav,
     NavItem, Redirect, Image, PageContent)
 
 
-class DatedAdmin(admin.ModelAdmin):
+class SuaveAdmin(admin.ModelAdmin):
+    class Media:
+        js = (
+            'js/jquery.min.js',
+            'js/jquery.badmanforms.js',
+        )
+
+
+class DatedAdmin(SuaveAdmin):
     pass
 
 
-class OrderedAdmin(DatedAdmin):
+class OrderedAdmin(SuaveAdmin):
     list_editable = ('order',)
     list_display = DatedAdmin.list_display + ('order',)
     exclude = ('order',)
 
     class Media:
-        js = (
-            'js/jquery.min.js',
+        js = SuaveAdmin.Media.js + (
             'js/jquery-ui.min.js',
             'admin/js/list-reorder.js',
             'admin/js/inline-reorder.js',
@@ -32,8 +39,7 @@ class SiteEntityAdmin(reversion.VersionAdmin):
     exclude = ('identifier',)
     search_fields = ('title',)
 
-    class Media:
-        js = ()
+    Media = SuaveAdmin.Media
 
 
 class OrderedEntityAdmin(SiteEntityAdmin):

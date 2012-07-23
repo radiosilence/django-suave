@@ -28,9 +28,26 @@ class Dated(models.Model):
         abstract = True
 
 
-class Ordered(Dated):
+class Ordered(models.Model):
     order = models.IntegerField(null=True, blank=True, db_index=True,
         verbose_name=_('display order'))
+
+    def save(self, *args, **kwargs):
+        model = self.__class__
+
+        if self.order is None:
+            # Append
+            try:
+                last = model.objects.order_by('-order')[0]
+                last_order = last.order
+                if not last_order:
+                    last_order = model.objects.all().count()
+                self.order = last_order
+            except IndexError:
+                # First row
+                self.order = 0
+
+        super(Ordered, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ('order', )
@@ -53,23 +70,6 @@ class SiteEntity(Dated):
     status = StatusField(db_index=True)
 
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()
-
-    def save(self, *args, **kwargs):
-        model = self.__class__
-
-        if self.order is None:
-            # Append
-            try:
-                last = model.objects.order_by('-order')[0]
-                last_order = last.order
-                if not last_order:
-                    last_order = model.objects.all().count()
-                self.order = last_order
-            except IndexError:
-                # First row
-                self.order = 0
-
-        super(SiteEntity, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
