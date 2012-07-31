@@ -168,8 +168,10 @@
     }
 
 
-    $.fn.multifilter = function(config) {
-        config = config || {};
+    $.fn.multifilter = function(o) {
+        o = $.extend({
+            onChange: function(event) {},
+        }, o);
 
         this.xeach(function() {
             var $this = $(this)
@@ -202,7 +204,7 @@
         } else {
             var ch = '';
         }
-        check_id = 'check_' + element.attr('name') + '_' + value;
+        check_id = 'check_' + element.parent().attr('name') + '_' + value;
         var li = jQuery('<li/>');
         var input_attrs = {
             'v': value,
@@ -225,8 +227,7 @@
     }
 
 
-    var checkgroup_change = function(event) {
-        event.preventDefault();
+    var checkgroup_change = function(event, callback) {
         var check = $(event.currentTarget)
           , controls = $(event.delegateTarget)
           , orig = $('select', controls)
@@ -245,9 +246,12 @@
               return value != check.attr('v');
             }));
         }
+        callback(event);
     };
-    $.fn.checkgroup = function(config) {
-        config = config || {};
+    $.fn.checkgroup = function(o) {
+        o = $.extend({
+            onChange: function(event) {},
+        }, o);
         this.xeach(function() {
             var $this = $(this)
               , options = $('option', $this)
@@ -264,7 +268,10 @@
                     title, $this
                 ));
             });
-            controls.on('change', 'input', checkgroup_change);
+            controls.on('change', 'input', function(event) {
+                event.preventDefault();
+                checkgroup_change(event, o.onChange);
+            });
         });
     };
 
