@@ -32,7 +32,7 @@ class OrderedAdmin(SuaveAdmin):
         )
 
 
-class SiteEntityAdmin(reversion.VersionAdmin):
+class SiteEntityAdmin(SuaveAdmin, reversion.VersionAdmin):
     list_editable = ('status', )
     list_display = ('title', 'status')
     list_filter = ('status',)
@@ -62,7 +62,7 @@ class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
 admin.site.register(Page, PageAdmin)
 
 
-class NavItemAdmin(MPTTModelAdmin):
+class NavItemAdmin(SuaveAdmin, MPTTModelAdmin):
     list_display = ('title', 'url', 'type')
     mptt_indent_field = "title"
 
@@ -96,6 +96,6 @@ admin.site.register(Redirect, RedirectAdmin)
 
 
 class PageContentAdmin(SiteEntityAdmin):
-    pass
+    exclude = ()
 
 admin.site.register(PageContent, PageContentAdmin)
