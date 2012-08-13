@@ -3,7 +3,7 @@ from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 import reversion
 
-from .models import (Page, ImageCarousel, ImageCarouselImage, Nav,
+from .models import (Page, ImageCarousel, ImageCarouselImage,
     NavItem, Redirect, Image, PageContent)
 
 

@@ -205,6 +205,9 @@ class Page(MPTTModel, Displayable, MetaInfo):
         )
         return url
 
+    def get_absolute_url(self):
+        return self.url
+
 
 Page._meta.get_field('body').verbose_name = _('page content')
 
@@ -231,10 +234,6 @@ class ImageCarouselImage(models.Model):
     image = ImageField(upload_to='carousel_img')
     description = models.TextField(blank=True)
     order = models.IntegerField(default=0)
-
-
-class Nav(SiteEntity):
-    pass
 
 
 class NavItem(MPTTModel, Dated):
@@ -265,6 +264,9 @@ class NavItem(MPTTModel, Dated):
 
     @property
     def url(self):
+        return self.get_absolute_url()
+
+    def get_absolute_url(self):
         if self.type == NavItem.TYPE.page:
             return self.page.url
         elif self.type == NavItem.TYPE.dynamic:
@@ -279,7 +281,12 @@ class NavItem(MPTTModel, Dated):
                 return reverse(self.dynamic_name, kwargs=args)
             except:
                 return '#'
-        else:
+        elif self.type == NavItem.TYPE.menu:
+            try:
+                return self.get_children()[0].url
+            except IndexError:
+                return '#'
+        elif self.type == NavItem.TYPE.static:
             return self.static_url
 
     @property
