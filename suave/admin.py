@@ -92,7 +92,7 @@ class RedirectAdmin(OrderedAdmin):
 
 class ImageInline(OrderedInline):
     model = Image
-    fields = ('admin_thumbnail', 'image', 'alt', 'order')
+    fields = ('admin_thumbnail', 'image', 'alt', 'title', 'credit', 'order')
     readonly_fields = ('admin_thumbnail', )
 
 
