@@ -319,6 +319,7 @@ class Image(Ordered):
     image = ImageField(upload_to='uploads')
     alt = models.CharField(max_length=511, null=True, blank=True)
     title = models.CharField(max_length=511, null=True, blank=True)
+    credit = models.CharField(max_length=255, null=True, blank=True)
 
     @property
     def admin_thumbnail(self):
