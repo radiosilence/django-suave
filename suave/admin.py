@@ -31,6 +31,10 @@ class OrderedAdmin(SuaveAdmin):
             'admin/js/inline-reorder.js',
         )
 
+class OrderedInline(admin.TabularInline):
+    class Media:
+        js = SuaveAdmin.Media.js + OrderedAdmin.Media.js
+
 
 class SiteEntityAdmin(SuaveAdmin, reversion.VersionAdmin):
     list_editable = ('status', )
@@ -86,7 +90,7 @@ class RedirectAdmin(OrderedAdmin):
     list_display = ('old_url', 'new_url', 'order')
 
 
-class ImageInline(admin.TabularInline):
+class ImageInline(OrderedInline):
     model = Image
     fields = ('admin_thumbnail', 'image', 'alt', 'order')
     readonly_fields = ('admin_thumbnail', )
