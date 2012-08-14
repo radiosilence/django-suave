@@ -7,7 +7,7 @@ from django.utils.importlib import import_module
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
-from .models import Page, pre_route, post_route
+from .models import Page, pre_route, post_route, Image
 
 
 def pre_url(route_url):
@@ -35,3 +35,8 @@ def get_page_from_url(url):
         raise Http404
 
 
+def get_default_image():
+    try:
+        return Image(image=settings.DEFAULT_IMAGE)
+    except AttributeError:
+        return None
