@@ -308,6 +308,13 @@ class NavItem(MPTTModel, Dated):
         return u'{}'.format(self.title)
 
 
+class Attachment(Ordered):
+    filename = models.FileField(upload_to='uploads')
+
+    class Meta:
+        abstract = True
+        ordering = ('order',)
+
 
 class Redirect(Ordered):
     old_url = models.CharField(max_length=255)
