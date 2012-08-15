@@ -1,4 +1,5 @@
 import mimetypes
+import os
 
 import django.dispatch
 
@@ -322,16 +323,21 @@ class Attachment(Ordered):
 
     @property
     def icon(self):
+        def filename(mimetype):
+            try:
+                return '{}{}.png'.format(
+                    settings.ICON_PATH,
+                    mimetype.replace('/', '-') 
+                )
+            except AttributeError:
+                return None
+
         filetype, _ = mimetypes.guess_type(self.filename)
-        if not filetype:
+        if not filetype or \
+            not os.path.exists(settings.STATIC_ROOT + filename(filetype)):
             filetype = 'empty'
-        try:
-            return '{}{}.png'.format(
-                settings.ICON_PATH,
-                filetype.replace('/', '-') 
-            )
-        except AttributeError:
-            return None
+            
+        return filename(filetype)
 
     class Meta:
         abstract = True
