@@ -1,6 +1,10 @@
+import mimetypes
+
 import django.dispatch
+
 from django.db import models
 from django.db.models.query import QuerySet
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
@@ -168,17 +172,6 @@ class Displayable(SiteEntity):
         abstract = True
 
 
-class Attachment(SiteEntity):
-    TYPE = Choices(
-        ('image', 'Image'),
-        ('video', 'Video'),
-        ('misc', 'Miscellaneous')
-    )
-    type = models.CharField(max_length=45, choices=TYPE, default=TYPE.image)
-    image = ImageField(upload_to='uploads', null=True, blank=True)
-    file = models.FileField(upload_to='uploads', null=True, blank=True)
-
-
 class Page(MPTTModel, Displayable, MetaInfo):
     template_override = models.CharField(max_length=255, null=True,
         blank=True)
@@ -309,7 +302,33 @@ class NavItem(MPTTModel, Dated):
 
 
 class Attachment(Ordered):
-    filename = models.FileField(upload_to='uploads')
+    file = models.FileField(upload_to='uploads')
+
+    @property
+    def filename(self):
+        return self.file.name.split('/')[-1]
+
+    @property
+    def size(self):
+        num = self.file.size
+        s = '{0:.{2}f}{1}'
+        p = 0
+        for x in [' bytes','KB','MB','GB', 'TB']:
+            if num < 1024.0:
+                return s.format(num, x, p)
+            num /= 1024.0
+            p = 2
+        return s.format(num, 'PB')
+
+    @property
+    def icon(self):
+        filetype, _ = mimetypes.guess_type(self.filename)
+        if not filetype:
+            filetype = 'empty'
+        return '{}{}.png'.format(
+            settings.ICON_PATH,
+            filetype.replace('/', '-') 
+        )
 
     class Meta:
         abstract = True

@@ -4,7 +4,7 @@ from mptt.admin import MPTTModelAdmin
 import reversion
 
 from .models import (Page, ImageCarousel, ImageCarouselImage,
-    NavItem, Redirect, Image, PageContent)
+    NavItem, Redirect, Image, Attachment, PageContent)
 
 
 class SuaveAdmin(admin.ModelAdmin):
@@ -94,6 +94,11 @@ class ImageInline(OrderedInline):
     model = Image
     fields = ('admin_thumbnail', 'image', 'alt', 'title', 'credit', 'order')
     readonly_fields = ('admin_thumbnail', )
+
+
+class AttachmentInline(OrderedInline):
+    model = Attachment
+    fields = ('file', 'order')
 
 
 admin.site.register(Redirect, RedirectAdmin)
