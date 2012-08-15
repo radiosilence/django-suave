@@ -325,10 +325,13 @@ class Attachment(Ordered):
         filetype, _ = mimetypes.guess_type(self.filename)
         if not filetype:
             filetype = 'empty'
-        return '{}{}.png'.format(
-            settings.ICON_PATH,
-            filetype.replace('/', '-') 
-        )
+        try:
+            return '{}{}.png'.format(
+                settings.ICON_PATH,
+                filetype.replace('/', '-') 
+            )
+        except AttributeError:
+            return None
 
     class Meta:
         abstract = True
