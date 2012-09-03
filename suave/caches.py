@@ -3,9 +3,8 @@ import hashlib
 
 from django.template.response import TemplateResponse
 from django.shortcuts import get_object_or_404
-from django.template.loader import render_to_string
 
-from .models import Page
+from .models import Page, NavItem
 
 class PageCache(babylon.Cache):
     model = Page
@@ -41,13 +40,12 @@ class PageCache(babylon.Cache):
 
         parent = 'base.html'
         if request.GET.get('HTTP_X_PJAX', False):
-            print "PJAX REQUST"
             parent = 'pjax.html'
 
         return TemplateResponse(request, template, dict(
             active=page,
             page=page,
             parent=parent
-        )).content
+        )).render().content
 
 babylon.register(PageCache)
