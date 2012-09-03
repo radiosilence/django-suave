@@ -391,3 +391,6 @@ class PageContent(ContentBlock):
     class Meta:
         verbose_name = 'block of page content'
         verbose_name_plural = 'blocks of page content'
+
+
+from .caches import *

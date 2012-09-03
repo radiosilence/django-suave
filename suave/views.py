@@ -3,18 +3,19 @@ from django.template.response import TemplateResponse
 from django.views.decorators.cache import cache_page
 from django.shortcuts import redirect
 
+import babylon
+
 from djpjax import pjaxtend
 
 from .models import Redirect, pre_route, post_route
 from .utils import get_page_from_url
 
-
 @pjaxtend()
 def page(request, url='/'):
     """Show a page."""
-
+    from babylon import CACHES
     try:
-        page = get_page_from_url(url)
+        response = babylon.get('PageCache', url, request)
     except Http404:
         try:
             r = Redirect.objects.get(old_url=url)
@@ -27,10 +28,4 @@ def page(request, url='/'):
                     return response
             raise Http404
 
-    template = page.template_override
-    if not template:
-        template = 'page.html'
-    return TemplateResponse(request, template, dict(
-        active=page,
-        page=page
-    ))
+    return HttpResponse(response, content_type='text/html')
