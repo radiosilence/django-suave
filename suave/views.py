@@ -12,30 +12,12 @@ from .models import Redirect, pre_route, post_route, Page
 
 def page(request, url='/'):
     """Show a page.""" 
-    def fix_url(url):
-        if url[-1] != '/':
-            url = url + '/'
-
-        if url[0] != '/':
-            url = '/' + url
-        return url
-
     try:
-        url = fix_url(url)
-        page = babylon.get('PageCache', url)
-        template = page.template_override
-        if not template:
-            template = 'page.html'
-
-        parent = 'base.html'
-        if request.GET.get('HTTP_X_PJAX', False):
-            parent = 'pjax.html'
-
-        return TemplateResponse(request, template, {
-            'active': page,
-            'page': page,
-            'parent': parent
-        })
+        pjax = request.GET.get('HTTP_X_PJAX', False)
+        content = babylon.get('PageCache', url, pjax, request=request)
+        if not content:
+            raise Http404    
+        return HttpResponse(content, content_type='text/html')
     except Http404:
         try:
             r = Redirect.objects.get(old_url=url)

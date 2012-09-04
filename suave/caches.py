@@ -10,8 +10,40 @@ from .models import Page, NavItem, PageContent
 
 class PageCache(babylon.Cache):
     model = Page
-    def generate(self, url, *args):
-        page = get_object_or_404(Page, status='live', url=url)
+    key_attr = 'url'
+    extra_delete_args = (False, True)
+    def generate(self, url=False, pjax=False, request=False, *args, **kwargs):
+        def fix_url(url):
+            if url[-1] != '/':
+                url = url + '/'
+
+            if url[0] != '/':
+                url = '/' + url
+            return url
+
+        if not request:
+            return False
+        try:
+            url = fix_url(url)
+            page = Page.objects.live().get(url=url)
+            template = page.template_override
+            if not template:
+                template = 'page.html'
+
+            parent = 'base.html'
+            if pjax:
+                parent = 'pjax.html'
+
+            return TemplateResponse(request, template, {
+                'active': page,
+                'page': page,
+                'parent': parent
+            }).render().content
+
+        except Page.DoesNotExist:
+            return False
+
+
         return page
 
 babylon.register(PageCache)
