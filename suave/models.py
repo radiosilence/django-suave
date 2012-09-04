@@ -239,6 +239,7 @@ class NavItem(MPTTModel, Dated):
     )
     type = models.CharField(max_length=15, choices=TYPE, default=TYPE.menu)
     text = models.CharField(max_length=127, blank=True, null=True)
+    template = models.CharField(max_length=255, blank=True, null=True)
 
     parent = TreeForeignKey('self', null=True, blank=True,
         related_name='children')
@@ -251,6 +252,7 @@ class NavItem(MPTTModel, Dated):
     dynamic_args = models.TextField(blank=True, null=True)
 
     static_url = models.CharField(max_length=255, blank=True, null=True)
+
 
     @property
     def ordered_children(self):
