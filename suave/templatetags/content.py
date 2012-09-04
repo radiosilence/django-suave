@@ -1,5 +1,5 @@
 from django import template
-from django.db.models import Q
+import babylon
 
 register = template.Library()
 
@@ -18,10 +18,8 @@ class ContentNode(template.Node):
     def render(self, context):
         identifier = self.identifier.resolve(context)
         try:
-            content = PageContent.objects.get(
-                Q(identifier=identifier),
-                Q(page=context['active']) | Q(page=None)
-            )
+            content = babylon.get('PageContentCache', identifier,
+                context['active'])
             context.push()
             context[self.as_var] = content
             output = self.nodelist.render(context)
