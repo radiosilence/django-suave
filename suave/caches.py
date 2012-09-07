@@ -52,7 +52,7 @@ class PageContentCache(babylon.Cache):
     model = PageContent
     key_attr = 'identifier'
 
-    def generate(self, identifier=None, active=None, instance=None, *args):
+    def generate(self, identifier=None, active=None, *args, **kwargs):
         if instance:
             return instance
         elif identifier:
