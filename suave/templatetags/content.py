@@ -18,9 +18,13 @@ class ContentNode(template.Node):
     def render(self, context):
         identifier = self.identifier.resolve(context)
         try:
-            active = context['active']
+            kwargs = {}
+            if hasattr(context, 'active'):
+                kwargs['active'] = context['active']
+
+            
             content = babylon.get('PageContentCache', identifier,
-                active=context['active'])
+                **kwargs)
             context.push()
             context[self.as_var] = content
             output = self.nodelist.render(context)
