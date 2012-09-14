@@ -4,7 +4,7 @@ NAME = 'django-suave'
 
 setup(
     name=NAME,
-    version="0.3.8",
+    version="0.3.9",
     description='Rather nice pages.',
     long_description=open('README.rst').read(),
     url='https://github.com/radiosilence/django-suave',
