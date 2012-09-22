@@ -3,22 +3,23 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
-
+from django.utils.timezone import utc
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        now = datetime.datetime.utcnow().replace(tzinfo=utc)
         # Deleting field 'NavItem.show_children'
         db.delete_column('suave_navitem', 'show_children')
 
         # Adding field 'NavItem.added'
         db.add_column('suave_navitem', 'added',
-                      self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, default=datetime.datetime(2012, 6, 21, 0, 0), blank=True),
+                      self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, default=now, blank=True),
                       keep_default=False)
 
         # Adding field 'NavItem.updated'
         db.add_column('suave_navitem', 'updated',
-                      self.gf('django.db.models.fields.DateTimeField')(auto_now=True, default=datetime.datetime(2012, 6, 21, 0, 0), blank=True),
+                      self.gf('django.db.models.fields.DateTimeField')(auto_now=True, default=now, blank=True),
                       keep_default=False)
 
         # Adding field 'NavItem.type'
