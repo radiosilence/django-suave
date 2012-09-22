@@ -26,6 +26,7 @@ from tinymce import models as tinymce_models
 
 
 class Dated(models.Model):
+    """Mixin provides added/updated time to a model"""
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -34,6 +35,7 @@ class Dated(models.Model):
 
 
 class Ordered(models.Model):
+    """Mixin provides ordering features to a model."""
     order = models.IntegerField(null=True, blank=True, db_index=True,
         verbose_name=_('display order'))
 
@@ -65,6 +67,9 @@ class SiteEntityQuerySet(QuerySet):
 
 
 class SiteEntity(Dated):
+    """Base model for entity which can be live/draft and has title, identifier,
+    and status. Also provides a queryset .live()."""
+
     STATUS = Choices(
         ('draft', 'Draft'),
         ('live', 'Live'),
@@ -87,6 +92,9 @@ class SiteEntity(Dated):
 
 
 class MetaInfo(models.Model):
+    """Mixin provides meta tags and page title (for SEO) with heirarchical 
+    resolution for pages."""
+
     _page_title = models.CharField(max_length=255, blank=True, null=True,
         verbose_name="Page Title", help_text='This will override the "title"'
             + ' value and corresponds to the &lt;title&gt; tag of the page.')
@@ -98,12 +106,11 @@ class MetaInfo(models.Model):
 
     @property
     def page_title(self):
-        if self._page_title:
-            return self._page_title
-        else:
-            return self.title
+        """Returns meta page title, or own title."""
+        return self._page_title or self.title
 
     def meta_keywords():
+        """Returns heirarchically resolved meta keywords."""
         def fget(self):
             if self._meta_keywords:
                 return self._meta_keywords
@@ -130,6 +137,7 @@ class MetaInfo(models.Model):
     meta_keywords = property(**meta_keywords())
 
     def meta_description():
+        """Returns heirarchically resolved meta description."""
         def fget(self):
             if self._meta_description:
                 return self._meta_description
@@ -160,6 +168,8 @@ class MetaInfo(models.Model):
 
 
 class Displayable(SiteEntity):
+    """Base type for page."""
+
     body = tinymce_models.HTMLField(null=True, blank=True,
         verbose_name=_('content'))
     slug = models.SlugField(max_length=255, db_index=True,
@@ -174,6 +184,7 @@ class Displayable(SiteEntity):
 
 
 class Page(MPTTModel, Displayable, MetaInfo):
+    """A normal page."""
     template_override = models.CharField(max_length=255, null=True,
         blank=True)
 
