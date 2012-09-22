@@ -10,4 +10,4 @@ django-extensions
 django-widget-tweaks
 django-extensions
 ipython
-django-babylon>=0.1.5
+django-babylon>=0.1.9

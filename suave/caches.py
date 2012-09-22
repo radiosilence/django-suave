@@ -11,6 +11,12 @@ from .models import Page, NavItem, PageContent
 class PageCache(babylon.Cache):
     model = Page
     key_attr = 'url'
+
+babylon.register(PageCache)
+
+class RenderedPageCache(babylon.Cache):
+    model = Page
+    key_attr = 'url'
     extra_delete_args = (False, True)
     def generate(self, url=False, pjax=False, request=False, *args, **kwargs):
         def fix_url(url):
@@ -25,7 +31,8 @@ class PageCache(babylon.Cache):
             return False
         try:
             url = fix_url(url)
-            page = Page.objects.live().get(url=url)
+            page = babylon.get('PageCache', url)
+
             template = page.template_override
             if not template:
                 template = 'page.html'
@@ -46,7 +53,7 @@ class PageCache(babylon.Cache):
 
         return page
 
-babylon.register(PageCache)
+babylon.register(RenderedPageCache)
 
 class PageContentCache(babylon.Cache):
     model = PageContent

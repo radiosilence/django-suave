@@ -8,15 +8,12 @@ import babylon
 from djpjax import pjaxtend
 
 from .models import Redirect, pre_route, post_route, Page
-
+from .shortcuts import get_page_or_404, rendered_page_or_404
 
 def page(request, url='/'):
     """Show a page.""" 
     try:
-        pjax = request.GET.get('HTTP_X_PJAX', False)
-        content = babylon.get('PageCache', url, pjax, request=request)
-        if not content:
-            raise Http404    
+        content = rendered_page_or_404(request, url=url)
         return HttpResponse(content, content_type='text/html')
     except Http404:
         try:
