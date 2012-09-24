@@ -1,9 +1,8 @@
+import babylon
+
 from django.http import Http404, HttpResponse
-from django.template.response import TemplateResponse
 from django.views.decorators.cache import cache_page
 from django.shortcuts import redirect, get_object_or_404
-
-import babylon
 
 from djpjax import pjaxtend
 
