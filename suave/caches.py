@@ -18,6 +18,9 @@ class RenderedPageCache(babylon.Cache):
     model = Page
     key_attr = 'url'
     extra_delete_args = (False, True)
+    dependencies = (
+        PageCache,
+    )
     def generate(self, url=False, pjax=False, request=False, *args, **kwargs):
         def fix_url(url):
             if url[-1] != '/':
