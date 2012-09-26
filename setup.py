@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 NAME = 'django-suave'
-VERSION = '0.3.14'
+VERSION = '0.3.15'
 
 setup(
     name=NAME,
