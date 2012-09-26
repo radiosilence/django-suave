@@ -264,6 +264,12 @@ class NavItem(MPTTModel, Dated):
 
     static_url = models.CharField(max_length=255, blank=True, null=True)
 
+    def active(self, path):
+
+        if self.url == '/':
+            return path == '/'
+        else:
+            return path.startswith(self.url)
 
     @property
     def ordered_children(self):
