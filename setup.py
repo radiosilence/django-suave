@@ -1,10 +1,8 @@
 from setuptools import setup, find_packages
 
-NAME = 'django-suave'
-
 setup(
-    name=NAME,
-    version="0.3.14",
+    name='django-suave',
+    version="0.3.16",
     description='Rather nice pages.',
     long_description=open('README.rst').read(),
     url='https://github.com/radiosilence/django-suave',
