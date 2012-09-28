@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 
 from suave.utils import RequestFactory
-from .models import Page, NavItem, PageContent
+from .models import Page, NavItem, ContentBlock
 
 class PageCache(babylon.Cache):
     model = Page
@@ -58,22 +58,9 @@ class RenderedPageCache(babylon.Cache):
 
 babylon.register(RenderedPageCache)
 
-class PageContentCache(babylon.Cache):
-    model = PageContent
+
+class ContentBlockCache(babylon.Cache):
+    model = ContentBlock
     key_attr = 'identifier'
 
-    def generate(self, identifier=None, active=None, instance=None, *args, **kwargs):
-        if instance:
-            return instance
-        elif identifier:
-            try:
-                return PageContent.objects.get(
-                    Q(identifier=identifier),
-                    Q(page=active) | Q(page=None)
-                )
-            except PageContent.DoesNotExist:
-                return False
-        else:
-            return False
-
-babylon.register(PageContentCache)
+babylon.register(ContentBlockCache)

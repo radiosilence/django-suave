@@ -4,7 +4,9 @@ from mptt.admin import MPTTModelAdmin
 import reversion
 
 from .models import (Page, ImageCarousel, ImageCarouselImage,
-    NavItem, Redirect, Image, Attachment, PageContent)
+    NavItem, Redirect, Image, Attachment, ContentBlock)
+
+from tinymce.widgets import TinyMCE
 
 
 class SuaveAdmin(admin.ModelAdmin):
@@ -40,7 +42,7 @@ class SiteEntityAdmin(SuaveAdmin, reversion.VersionAdmin):
     list_editable = ('status', )
     list_display = ('title', 'status')
     list_filter = ('status',)
-    exclude = ('identifier',)
+    exclude = ()
     search_fields = ('title',)
 
     Media = SuaveAdmin.Media
@@ -54,9 +56,12 @@ class OrderedEntityAdmin(SiteEntityAdmin):
     Media = OrderedAdmin.Media
 
 
+class SluggedAdmin(SuaveAdmin):
+    prepopulated_fields = {"slug": ("title",)}
+
+
 class DisplayableAdmin(SiteEntityAdmin):
     list_display = ('title', 'slug', 'status')
-    prepopulated_fields = {"slug": ("title",)}
 
 
 class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
@@ -81,12 +86,37 @@ class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
         }),
     )
 
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'body':
+            return db_field.formfield(widget=TinyMCE(
+                attrs={'cols': 110, 'rows': 50},
+            ))
+        return super(PageAdmin, self).formfield_for_dbfield(
+            db_field, **kwargs)
+
 admin.site.register(Page, PageAdmin)
 
 
 class NavItemAdmin(SuaveAdmin, MPTTModelAdmin):
     list_display = ('title', 'url', 'type')
     mptt_indent_field = "title"
+    fieldsets = (
+        (None, {
+            'fields': ('type', 'text', 'parent'),
+        }),
+        ('Menu', {
+            'fields': ('template',),
+        }),
+        ('Page', {
+            'fields': ('page', 'page_show_children',),
+        }),
+        ('Dynamic', {
+            'fields': ('dynamic_name', 'dynamic_args',),
+        }),
+        ('Static', {
+            'fields': ('static_url',),
+        }),
+    )
 
 admin.site.register(NavItem, NavItemAdmin)
 
@@ -122,7 +152,7 @@ class AttachmentInline(OrderedInline):
 admin.site.register(Redirect, RedirectAdmin)
 
 
-class PageContentAdmin(SiteEntityAdmin):
+class ContentBlockAdmin(admin.ModelAdmin):
     exclude = ()
 
-admin.site.register(PageContent, PageContentAdmin)
+admin.site.register(ContentBlock, ContentBlockAdmin)

@@ -3,7 +3,7 @@ import babylon
 
 register = template.Library()
 
-from suave.models import PageContent
+from suave.models import ContentBlock
 
 
 class ContentNode(template.Node):
@@ -23,7 +23,7 @@ class ContentNode(template.Node):
                 kwargs['active'] = context['active']
 
             
-            content = babylon.get('PageContentCache', identifier,
+            content = babylon.get('ContentBlockCache', identifier,
                 **kwargs)
             context.push()
             context[self.as_var] = content
