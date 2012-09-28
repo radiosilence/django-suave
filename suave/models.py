@@ -192,6 +192,11 @@ class Page(MPTTModel, Displayable, MetaInfo):
         related_name='children')
     url = models.CharField(max_length=255, null=True, blank=True)
 
+    header_title = models.CharField(max_length=255, blank=True)
+    header_image = ImageField(upload_to='page_headers', null=True, blank=True)
+    header_content = tinymce_models.HTMLField(blank=True, null=True,
+        verbose_name='header content')
+
     # Because we're not directly inheriting from Displayable, we need to make
     # sure the default manager is set.
     objects = PassThroughManager.for_queryset_class(SiteEntityQuerySet)()

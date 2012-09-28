@@ -63,6 +63,24 @@ class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
     list_display = ('title', 'url', 'status')
     exclude = ('url',)
 
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'slug', 'status', 'parent', 'body'),
+        }),
+        ('Header', {
+            'classes': ('collapse',),
+            'fields': ('header_title', 'header_image', 'header_content'),
+        }),
+        ('Meta/SEO', {
+            'classes': ('collapse',),
+            'fields': ('_page_title', '_meta_keywords', '_meta_description'),
+        }),
+        ('Advanced', {
+            'classes': ('collapse',),
+            'fields': ('template_override',)
+        }),
+    )
+
 admin.site.register(Page, PageAdmin)
 
 
