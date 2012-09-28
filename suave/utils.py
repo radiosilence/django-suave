@@ -14,7 +14,7 @@ from django.test import Client
 from django.core.handlers.wsgi import WSGIRequest
 
 
-from .models import Page, pre_route, post_route, Image
+from .models import pre_route, post_route, Image
 
 
 def pre_url(route_url):
