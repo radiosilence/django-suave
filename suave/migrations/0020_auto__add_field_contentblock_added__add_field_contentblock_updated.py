@@ -10,13 +10,13 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'ContentBlock.added'
         db.add_column('suave_contentblock', 'added',
-                      self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, default=None, blank=True),
-                      keep_default=False)
+                      self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, default=None, null=True, blank=True),
+                      keep_default=True)
 
         # Adding field 'ContentBlock.updated'
         db.add_column('suave_contentblock', 'updated',
-                      self.gf('django.db.models.fields.DateTimeField')(auto_now=True, default=None, blank=True),
-                      keep_default=False)
+                      self.gf('django.db.models.fields.DateTimeField')(auto_now=True, default=None, null=True, blank=True),
+                      keep_default=True)
 
 
     def backwards(self, orm):
