@@ -154,6 +154,15 @@ class SiteEntity(Statused, Dated, Titled):
         abstract = True
 
 
+class CSSTweaks(models.Model):
+    """Provides admin interface for extra CSS classes/style/tags"""
+    extra_classes = models.CharField(max_length=255, blank=True, null=True)
+    css_id = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+
 class MetaInfo(models.Model):
     """Mixin provides meta tags and page title (for SEO) with heirarchical 
     resolution for pages."""
@@ -320,7 +329,7 @@ class ImageCarouselImage(models.Model):
     order = models.IntegerField(default=0)
 
 
-class NavItem(MPTTModel, Dated):
+class NavItem(MPTTModel, Dated, CSSTweaks):
     TYPE = Choices(
         ('menu', 'Menu'),
         ('page', 'Page'),
@@ -342,7 +351,7 @@ class NavItem(MPTTModel, Dated):
     dynamic_args = models.TextField(blank=True, null=True)
 
     static_url = models.CharField(max_length=255, blank=True, null=True)
-
+    
     def active(self, path, exact=True):
         if exact:
             return path == self.url
