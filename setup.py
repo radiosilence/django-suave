@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-suave',
-    version="0.4.1",
+    version="0.4.2",
     description='Rather nice pages.',
     long_description=open('README.rst').read(),
     url='https://github.com/radiosilence/django-suave',
