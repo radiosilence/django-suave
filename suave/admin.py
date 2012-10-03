@@ -116,6 +116,10 @@ class NavItemAdmin(SuaveAdmin, MPTTModelAdmin):
         ('Static', {
             'fields': ('static_url',),
         }),
+        ('Tweaks', {
+            'classes': ('collapse',),
+            'fields': ('extra_classes', 'css_id'),
+        }),
     )
 
 admin.site.register(NavItem, NavItemAdmin)
