@@ -78,7 +78,8 @@ class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
         }),
         ('Meta/SEO', {
             'classes': ('collapse',),
-            'fields': ('_page_title', '_meta_keywords', '_meta_description'),
+            'fields': ('_page_title', '_meta_keywords', '_meta_description',
+                '_page_h1'),
         }),
         ('Advanced', {
             'classes': ('collapse',),
