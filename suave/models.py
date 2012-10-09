@@ -182,10 +182,20 @@ class MetaInfo(models.Model):
         help_text=_("""try to keep this below 156 characters for SEO
             purposes"""))
 
+    _page_h1 = models.CharField(max_length=255, blank=True, null=True,
+        verbose_name=_("main H1"),
+        help_text=_("""an override for the page's main H1 on templates that
+            support this."""))
+
     @property
     def page_title(self):
         """Returns meta page title, or own title."""
         return self._page_title or self.title
+
+    @property
+    def page_h1(self):
+        """Returns page H1 with fallback to page title."""
+        return self._page_h1 or self.page_title
 
     def meta_keywords():
         """Returns heirarchically resolved meta keywords."""
