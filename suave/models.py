@@ -68,9 +68,9 @@ class Identified(models.Model):
         unique=True,
         help_text=_(__doc__),
         verbose_name=_('identifier'))
-    
+
     class Meta:
-        abstract = True    
+        abstract = True
 
 
 class SiteEntityQuerySet(QuerySet):
@@ -118,7 +118,7 @@ class Slugged(models.Model):
     It is recommended to keep this the same even when changing an item's
     name or title, for SEO purposes and to prevent broken inbound links.
     """
-    
+
     slug = models.SlugField(max_length=255, db_index=True,
         help_text=_(__doc__),
         verbose_name=_('slug'))
@@ -164,7 +164,7 @@ class CSSTweaks(models.Model):
 
 
 class MetaInfo(models.Model):
-    """Mixin provides meta tags and page title (for SEO) with heirarchical 
+    """Mixin provides meta tags and page title (for SEO) with heirarchical
     resolution for pages."""
 
     _page_title = models.CharField(max_length=255, blank=True, null=True,
@@ -361,7 +361,7 @@ class NavItem(MPTTModel, Dated, CSSTweaks):
     dynamic_args = models.TextField(blank=True, null=True)
 
     static_url = models.CharField(max_length=255, blank=True, null=True)
-    
+
     def active(self, path, exact=True):
         if exact:
             return path == self.url
@@ -443,7 +443,7 @@ class Attachment(Ordered):
             try:
                 return '{}{}.png'.format(
                     settings.ICON_PATH,
-                    mimetype.replace('/', '-') 
+                    mimetype.replace('/', '-')
                 )
             except AttributeError:
                 return None
@@ -452,7 +452,7 @@ class Attachment(Ordered):
         if not filetype or \
             not os.path.exists(settings.STATIC_ROOT + filename(filetype)):
             filetype = 'empty'
-            
+
         return filename(filetype)
 
     class Meta:
