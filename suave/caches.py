@@ -35,7 +35,8 @@ class RenderedPageCache(babylon.Cache):
         try:
             url = fix_url(url)
             page = babylon.get('PageCache', url)
-
+            if not page:
+                raise Page.DoesNotExist
             template = page.template_override
             if not template:
                 template = 'page.html'
