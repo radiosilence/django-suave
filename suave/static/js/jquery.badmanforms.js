@@ -149,18 +149,18 @@
             })
 
 
-            var o = [];
+            var ov = [];
             $('ul li', controls).xeach(function(v) {
                 var $this = $(this);
                 var select = $this.find('select');
                 if (select.val() != -1) {
-                    o.push(select.val());
+                    ov.push(select.val());
                     if ($('a', $this).length == 0) {
                         killa($this);
                     }
                 }
             });
-            orig.val(o);
+            orig.val(ov);
             var li = create_dropdown($('option', orig));
             li.appendTo(ul);
         }
@@ -248,17 +248,17 @@
               , controls = $(event.delegateTarget)
               , orig = $('select', controls)
               , option = $('option[value=' + check.attr('v') + ']', orig)
-              , o = orig.val()
+              , ov = orig.val()
               ;
 
-            if (o == null) {
-                var o = [];
+            if (ov == null) {
+                var ov = [];
             }
             if (check.attr('checked')) {
-                o.push(check.attr('v'));
-                orig.val(o);
+                ov.push(check.attr('v'));
+                orig.val(ov);
             } else {
-                orig.val(jQuery.grep(o, function(value) {
+                orig.val(jQuery.grep(ov, function(value) {
                   return value != check.attr('v');
                 }));
             }
