@@ -87,95 +87,6 @@
      * MULTIFILTER
      * ------------------------------ */
 
-    var killa = function(li) {
-        var a = jQuery('<a/>', {
-            href: 'javascript:void(0)',
-            html: 'x',
-            class: 'kill',
-        });
-        a.appendTo(li);
-    }
-
-
-    var create_dropdown = function(options, selected) {
-        if (selected == undefined) {
-            selected = { value: -1 }
-        }
-        var li = jQuery('<li/>');
-        var select = jQuery('<select/>');
-        var option = jQuery('<option/>', {
-            value: -1,
-            text: '- Select One -'
-        });
-        option.appendTo(select);
-        options.xeach(function() {
-            $this = $(this);
-            var option = jQuery('<option/>', {
-                value: this.value,
-                text: $this.text(),
-            });
-            if (this.value == selected.value) {
-                option.attr('selected', true);
-            }
-            option.appendTo(select);
-        })
-        select.appendTo(li);
-        if (selected.value > 0) {
-            killa(li);
-        }
-        return li;
-    }
-
-
-    var multifilter_update = function(controls) {
-        var orig = $('select.orig', controls);
-        var ul = $('ul', controls);
-
-        $('ul li', controls).xeach(function() {
-            $this = $(this);
-            var select = $('select', $this);
-            if (select.val() > 0) {
-            } else {
-                select.closest('li').remove();
-                select.remove();
-            }
-        })
-
-
-        var o = [];
-        $('ul li', controls).xeach(function(v) {
-            var $this = $(this);
-            var select = $this.find('select');
-            if (select.val() != -1) {
-                o.push(select.val());
-                if ($('a', $this).length == 0) {
-                    killa($this);
-                }
-            }
-        });
-        orig.val(o);
-        var li = create_dropdown($('option', orig));
-        li.appendTo(ul);
-    }
-
-
-    var multifilter_change = function(event) {
-        event.preventDefault();
-        var select = $(event.currentTarget);
-        var controls = $(event.delegateTarget);
-
-        multifilter_update(controls);
-    }
-
-
-    var multifilter_kill = function(event) {
-        event.preventDefault();
-        controls = $(event.delegateTarget);
-        var li = $(event.currentTarget).closest('li')
-        var select = li.find('select');
-        select.val(-1);
-        multifilter_update(controls);
-    }
 
 
     $.fn.multifilter = function(o) {
@@ -183,6 +94,97 @@
             onChange: function(event) {},
         }, o);
 
+        var killa = function(li) {
+            var a = jQuery('<a/>', {
+                href: 'javascript:void(0)',
+                html: 'x',
+                class: 'kill',
+            });
+            a.appendTo(li);
+        }
+
+
+        var create_dropdown = function(options, selected) {
+            if (selected == undefined) {
+                selected = { value: -1 }
+            }
+            var li = jQuery('<li/>');
+            var select = jQuery('<select/>');
+            var option = jQuery('<option/>', {
+                value: -1,
+                text: '- Select One -'
+            });
+            option.appendTo(select);
+            options.xeach(function() {
+                $this = $(this);
+                var option = jQuery('<option/>', {
+                    value: this.value,
+                    text: $this.text(),
+                });
+                if (this.value == selected.value) {
+                    option.attr('selected', true);
+                }
+                option.appendTo(select);
+            })
+            select.appendTo(li);
+            if (selected.value > 0) {
+                killa(li);
+            }
+            return li;
+        }
+
+
+        var multifilter_update = function(controls) {
+            var orig = $('select.orig', controls);
+            var ul = $('ul', controls);
+
+            $('ul li', controls).xeach(function() {
+                $this = $(this);
+                var select = $('select', $this);
+                if (select.val() > 0) {
+                } else {
+                    select.closest('li').remove();
+                    select.remove();
+                }
+            })
+
+
+            var o = [];
+            $('ul li', controls).xeach(function(v) {
+                var $this = $(this);
+                var select = $this.find('select');
+                if (select.val() != -1) {
+                    o.push(select.val());
+                    if ($('a', $this).length == 0) {
+                        killa($this);
+                    }
+                }
+            });
+            orig.val(o);
+            var li = create_dropdown($('option', orig));
+            li.appendTo(ul);
+        }
+
+
+        var multifilter_change = function(event) {
+            event.preventDefault();
+            var select = $(event.currentTarget);
+            var controls = $(event.delegateTarget);
+
+            multifilter_update(controls);
+            o.onChange(event);
+        }
+
+
+        var multifilter_kill = function(event) {
+            event.preventDefault();
+            controls = $(event.delegateTarget);
+            var li = $(event.currentTarget).closest('li')
+            var select = li.find('select');
+            select.val(-1);
+            multifilter_update(controls);
+            o.onChange(event);
+        }
         this.xeach(function() {
             var $this = $(this)
               , options = $('option', $this)
@@ -207,61 +209,62 @@
     /* --------------------------------
      * CHECKGROUP
      * ------------------------------ */
-
-    var create_check = function(value, selected, title, element) {
-        if (selected) {
-            var ch = ' checked';
-        } else {
-            var ch = '';
-        }
-        check_id = 'check_' + element.parent().attr('name') + '_' + value;
-        var li = jQuery('<li/>');
-        var input_attrs = {
-            'v': value,
-            id: check_id,
-            type: 'checkbox'
-        }
-        if (selected) {
-            input_attrs['checked'] = true;
-        }
-        var input = jQuery('<input/>', input_attrs);
-        var label = jQuery('<label/>', {
-            'for': check_id,
-            'text': title,
-        });
-        input.appendTo(li);
-        label.appendTo(li);
-        var br = jQuery('<br/>');
-        br.appendTo(li);
-        return li;
-    }
-
-
-    var checkgroup_change = function(event, callback) {
-        var check = $(event.currentTarget)
-          , controls = $(event.delegateTarget)
-          , orig = $('select', controls)
-          , option = $('option[value=' + check.attr('v') + ']', orig)
-          , o = orig.val()
-          ;
-
-        if (o == null) {
-            var o = [];
-        }
-        if (check.attr('checked')) {
-            o.push(check.attr('v'));
-            orig.val(o);
-        } else {
-            orig.val(jQuery.grep(o, function(value) {
-              return value != check.attr('v');
-            }));
-        }
-        callback(event);
-    };
     $.fn.checkgroup = function(o) {
         o = $.extend({
             onChange: function(event) {},
         }, o);
+
+        var create_check = function(value, selected, title, element) {
+            if (selected) {
+                var ch = ' checked';
+            } else {
+                var ch = '';
+            }
+            check_id = 'check_' + element.parent().attr('name') + '_' + value;
+            var li = jQuery('<li/>');
+            var input_attrs = {
+                'v': value,
+                id: check_id,
+                type: 'checkbox'
+            }
+            if (selected) {
+                input_attrs['checked'] = true;
+            }
+            var input = jQuery('<input/>', input_attrs);
+            var label = jQuery('<label/>', {
+                'for': check_id,
+                'text': title,
+            });
+            input.appendTo(li);
+            label.appendTo(li);
+            var br = jQuery('<br/>');
+            br.appendTo(li);
+            return li;
+        }
+
+
+        var checkgroup_change = function(event) {
+            var check = $(event.currentTarget)
+              , controls = $(event.delegateTarget)
+              , orig = $('select', controls)
+              , option = $('option[value=' + check.attr('v') + ']', orig)
+              , o = orig.val()
+              ;
+
+            if (o == null) {
+                var o = [];
+            }
+            if (check.attr('checked')) {
+                o.push(check.attr('v'));
+                orig.val(o);
+            } else {
+                orig.val(jQuery.grep(o, function(value) {
+                  return value != check.attr('v');
+                }));
+            }
+            o.onChange(event);
+        };
+
         this.xeach(function() {
             var $this = $(this)
               , options = $('option', $this)
@@ -280,7 +283,7 @@
             });
             controls.on('change', 'input', function(event) {
                 event.preventDefault();
-                checkgroup_change(event, o.onChange);
+                checkgroup_change(event);
             });
         });
     };
