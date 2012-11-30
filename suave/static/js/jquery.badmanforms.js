@@ -72,7 +72,7 @@
      * ------------------------------ */
     var init_special_select = function($this, type) {
         var controls = jQuery('<div/>', {
-            class: type,
+            'class': type
         });
         jQuery('<ul/>').appendTo(controls);
         hide = jQuery('<div/>').appendTo(controls).hide();
@@ -91,14 +91,14 @@
 
     $.fn.multifilter = function(o) {
         o = $.extend({
-            onChange: function(event) {},
+            onChange: function(event) {}
         }, o);
 
         var killa = function(li) {
             var a = jQuery('<a/>', {
                 href: 'javascript:void(0)',
                 html: 'x',
-                class: 'kill',
+                'class': 'kill'
             });
             a.appendTo(li);
         }
@@ -119,7 +119,7 @@
                 $this = $(this);
                 var option = jQuery('<option/>', {
                     value: this.value,
-                    text: $this.text(),
+                    text: $this.text()
                 });
                 if (this.value == selected.value) {
                     option.attr('selected', true);
@@ -211,7 +211,7 @@
      * ------------------------------ */
     $.fn.checkgroup = function(o) {
         o = $.extend({
-            onChange: function(event) {},
+            onChange: function(event) {}
         }, o);
 
         var create_check = function(value, selected, title, element) {
@@ -233,7 +233,7 @@
             var input = jQuery('<input/>', input_attrs);
             var label = jQuery('<label/>', {
                 'for': check_id,
-                'text': title,
+                'text': title
             });
             input.appendTo(li);
             label.appendTo(li);
