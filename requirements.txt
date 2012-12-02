@@ -1,8 +1,10 @@
-django>=1.4.1
+Django>=1.4.2
 south>=0.7.6
 django-mptt>=0.5.4
-django-reversion>=1.6.2
+django-reversion>=1.6.4
 django-model-utils>=1.1.0
 sorl-thumbnail>=11.12
 django-extensions>=0.9
 django-widget-tweaks>=1.1.2
+johnny-cache>=1.4
+-e git://github.com/yourcelf/django-jimmypage.git#egg=django-jimmypage

@@ -500,6 +500,3 @@ class ContentBlockBase(Dated, Bodied, Titled):
 
 class ContentBlock(ContentBlockBase, Identified):
     pass
-
-
-from .caches import *

@@ -1,5 +1,4 @@
 from django import template
-import babylon
 
 register = template.Library()
 
@@ -22,15 +21,14 @@ class ContentNode(template.Node):
             if hasattr(context, 'active'):
                 kwargs['active'] = context['active']
 
-            
-            content = babylon.get('ContentBlockCache', identifier,
+            content = ContentBlock.objects.get(identifier=identifier,
                 **kwargs)
             context.push()
             context[self.as_var] = content
             output = self.nodelist.render(context)
             context.pop()
             return output
-        except PageContent.DoesNotExist:
+        except ContentBlock.DoesNotExist:
             return ''
 
 @register.tag
