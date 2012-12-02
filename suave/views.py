@@ -4,8 +4,6 @@ from django.http import Http404, HttpResponse
 from django.views.decorators.cache import cache_page
 from django.shortcuts import redirect, get_object_or_404
 
-from djpjax import pjaxtend
-
 from .models import Redirect, pre_route, post_route, Page
 from .shortcuts import get_page_or_404, rendered_page_or_404
 

@@ -4,7 +4,6 @@ django-mptt>=0.5.4
 django-reversion>=1.6.2
 django-model-utils>=1.1.0
 sorl-thumbnail>=11.12
-django-pjax
 django-extensions>=0.9
 django-widget-tweaks>=1.1.2
 django-babylon>=0.1.13
