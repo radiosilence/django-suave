@@ -1,7 +1,6 @@
 import babylon
 
 from django.http import Http404, HttpResponse
-from django.views.decorators.cache import cache_page
 from django.shortcuts import redirect, get_object_or_404
 
 from .models import Redirect, pre_route, post_route, Page

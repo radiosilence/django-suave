@@ -6,4 +6,3 @@ django-model-utils>=1.1.0
 sorl-thumbnail>=11.12
 django-extensions>=0.9
 django-widget-tweaks>=1.1.2
-django-babylon>=0.1.13
