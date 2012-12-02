@@ -73,16 +73,16 @@ class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
             'fields': ('title', 'slug', 'status', 'parent', 'body'),
         }),
         ('Header', {
-            'classes': ('collapse',),
+            'classes': ('collapse grp-collapse grp-closed',),
             'fields': ('header_title', 'header_image', 'header_content'),
         }),
         ('Meta/SEO', {
-            'classes': ('collapse',),
+            'classes': ('collapse grp-collapse grp-closed',),
             'fields': ('_page_title', '_meta_keywords', '_meta_description',
                 '_page_h1'),
         }),
         ('Advanced', {
-            'classes': ('collapse',),
+            'classes': ('collapse grp-collapse grp-closed',),
             'fields': ('template_override',)
         }),
     )
@@ -118,7 +118,7 @@ class NavItemAdmin(SuaveAdmin, MPTTModelAdmin):
             'fields': ('static_url',),
         }),
         ('Tweaks', {
-            'classes': ('collapse',),
+            'classes': ('collapse grp-collapse grp-closed',),
             'fields': ('extra_classes', 'css_id'),
         }),
     )
