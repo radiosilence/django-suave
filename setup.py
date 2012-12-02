@@ -1,5 +1,14 @@
 from setuptools import setup, find_packages
 
+requires = []
+dep_links = []
+
+for dep in open('requirements.txt').read().split("\n"):
+    if dep.startswith('git+'):
+        dep_links.append(dep)
+    else:
+        requires.append(dep)
+
 setup(
     name='django-suave',
     version="0.5.0",
@@ -11,5 +20,6 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     license="LICENSE.txt",
-    install_requires=open('requirements.txt').read().split("\n")
+    install_requires=requires,
+    dependency_links=dep_links,
 )
