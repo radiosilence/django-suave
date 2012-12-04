@@ -461,8 +461,12 @@ class Attachment(Ordered):
 
 
 class Redirect(Ordered):
-    old_url = models.CharField(max_length=255)
-    new_url = models.CharField(max_length=255, blank=True)
+    """This allows us to eventually be much more advanced than
+    contrib.Redirect"""
+    old_url = models.CharField(max_length=255,
+        help_text=_('Absolute URL with trailing slash (e.g. /potato/)'))
+    new_url = models.CharField(max_length=255, blank=True,
+        help_text=_('Absolute URL with trailing slash (e.g. /tomato/)'))
     permanent = models.BooleanField(default=True)
 
 
