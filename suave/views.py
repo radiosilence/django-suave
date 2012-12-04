@@ -33,9 +33,8 @@ def page(request, url='/'):
             r = Redirect.objects.get(old_url=url)
             return redirect(r.new_url, permanent=r.permanent)
         except Redirect.DoesNotExist:
-
             post_routes = post_route.send(sender=request, url=url)
             for reciever, response in post_routes:
                 if response:
                     return response
-            raise
+            raise Http404

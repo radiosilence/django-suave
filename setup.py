@@ -11,7 +11,7 @@ for dep in open('requirements.txt').read().split("\n"):
 
 setup(
     name='django-suave',
-    version="0.5.3",
+    version="0.5.4",
     description='Rather nice pages.',
     long_description=open('README.rst').read(),
     url='https://github.com/radiosilence/django-suave',
