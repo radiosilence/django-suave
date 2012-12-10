@@ -43,7 +43,7 @@
 
                 $child.find('option').xeach(function() {
                     if (allowed[this.value]) {
-                        this.style.display = 'inline';
+                        this.style.display = 'block';
                     } else {
                         this.style.display = 'none';
                     }
