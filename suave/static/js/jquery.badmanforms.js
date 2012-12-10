@@ -42,7 +42,7 @@
                 }
 
                 $child.find('option').xeach(function() {
-                    if (allowed[this.value]) {
+                    if (allowed[this.value] || !this.value) {
                         this.style.display = 'block';
                     } else {
                         this.style.display = 'none';
