@@ -66,6 +66,7 @@ class DisplayableAdmin(SiteEntityAdmin):
 
 class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
     list_display = ('title', 'url', 'status')
+    prepopulated_fields = {"slug": ("title",)}
     exclude = ('url',)
 
     fieldsets = (
