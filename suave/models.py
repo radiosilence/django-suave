@@ -460,16 +460,6 @@ class Attachment(Ordered):
         ordering = ('order',)
 
 
-class Redirect(Ordered):
-    """This allows us to eventually be much more advanced than
-    contrib.Redirect"""
-    old_url = models.CharField(max_length=255,
-        help_text=_('Absolute URL with trailing slash (e.g. /potato/)'))
-    new_url = models.CharField(max_length=255, blank=True,
-        help_text=_('Absolute URL with trailing slash (e.g. /tomato/)'))
-    permanent = models.BooleanField(default=True)
-
-
 class Image(Ordered):
     image = ImageField(upload_to='uploads')
     alt = models.CharField(max_length=511, null=True, blank=True)

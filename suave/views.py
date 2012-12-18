@@ -3,7 +3,7 @@ from jimmypage.cache import cache_page
 from django.http import Http404
 from django.shortcuts import redirect, get_object_or_404, render
 
-from .models import Redirect, pre_route, post_route, Page
+from .models import pre_route, post_route, Page
 
 
 @cache_page
@@ -11,12 +11,12 @@ def page(request, url='/'):
     """Show a page.""" 
     try:
         def fix_url(url):
-           if url[-1] != '/':
+            if url[-1] != '/':
                url = url + '/'
 
-           if url[0] != '/':
+            if url[0] != '/':
                url = '/' + url
-           return url
+            return url
 
         url = fix_url(url)
         page = get_object_or_404(Page, url=url)
@@ -25,16 +25,12 @@ def page(request, url='/'):
         if not template:
            template = 'page.html'
         return render(request, template, {
-           'active': page,
-           'page': page,
+            'active': page,
+            'page': page,
         }, content_type='text/html')
     except Http404:
-        try:
-            r = Redirect.objects.get(old_url=url)
-            return redirect(r.new_url, permanent=r.permanent)
-        except Redirect.DoesNotExist:
-            post_routes = post_route.send(sender=request, url=url)
-            for reciever, response in post_routes:
-                if response:
-                    return response
-            raise Http404
+        post_routes = post_route.send(sender=request, url=url)
+        for reciever, response in post_routes:
+            if response:
+                return response
+        raise Http404

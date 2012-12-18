@@ -4,7 +4,7 @@ from mptt.admin import MPTTModelAdmin
 import reversion
 
 from .models import (Page, ImageCarousel, ImageCarouselImage,
-    NavItem, Redirect, Image, Attachment, ContentBlock)
+    NavItem, Image, Attachment, ContentBlock)
 
 from tinymce.widgets import TinyMCE
 
@@ -140,10 +140,6 @@ class ImageCarouselAdmin(admin.ModelAdmin):
 admin.site.register(ImageCarousel, ImageCarouselAdmin)
 
 
-class RedirectAdmin(OrderedAdmin):
-    list_display = ('old_url', 'new_url', 'order')
-
-
 class ImageInline(OrderedInline):
     model = Image
     fields = ('admin_thumbnail', 'image', 'alt', 'title', 'credit', 'order')
@@ -154,8 +150,6 @@ class AttachmentInline(OrderedInline):
     model = Attachment
     fields = ('file', 'order')
 
-
-admin.site.register(Redirect, RedirectAdmin)
 
 
 class ContentBlockAdmin(admin.ModelAdmin):
