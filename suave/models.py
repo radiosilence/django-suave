@@ -22,7 +22,7 @@ from sorl.thumbnail import ImageField
 from sorl.thumbnail.helpers import ThumbnailError
 from sorl.thumbnail import get_thumbnail
 
-from tinymce.models import HTMLField
+from ckeditor.fields import RichTextField
 
 
 class Dated(models.Model):
@@ -131,7 +131,7 @@ class Bodied(models.Model):
     """The body of a document is usually associated with the bulk of the
     content associated with an item, for instance a description or the content
     of a page."""
-    body = HTMLField(null=True, blank=True,
+    body = RichTextField(null=True, blank=True,
         help_text=_(__doc__),
         verbose_name=_('content'))
 
@@ -287,7 +287,7 @@ class Page(MPTTModel, Displayable, MetaInfo):
         verbose_name=_('image'),
         help_text=_("""Image for the page's header section (template support
             required)"""))
-    header_content = HTMLField(blank=True, null=True,
+    header_content = RichTextField(blank=True, null=True,
         verbose_name=_('content'),
         help_text=_("""Content for the page's header section (template support
             required)"""))
