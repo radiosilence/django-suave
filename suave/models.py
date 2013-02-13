@@ -93,7 +93,7 @@ class Titled(models.Model):
 
 
 class Statused(models.Model):
-    """Choosing ‘Live’ will make the item visible on the website. Choosing
+    """Choosing 'Live' will make the item visible on the website. Choosing
     'Draft' will store the item in the admin - you will be able to make it
     live at a later date."""
 
