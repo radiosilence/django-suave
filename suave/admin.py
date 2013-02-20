@@ -6,8 +6,6 @@ import reversion
 from .models import (Page, ImageCarousel, ImageCarouselImage,
     NavItem, Image, Attachment, ContentBlock)
 
-from tinymce.widgets import TinyMCE
-
 
 class SuaveAdmin(admin.ModelAdmin):
     class Media:
@@ -88,13 +86,6 @@ class PageAdmin(MPTTModelAdmin, DisplayableAdmin):
         }),
     )
 
-    def formfield_for_dbfield(self, db_field, **kwargs):
-        if db_field.name == 'body':
-            return db_field.formfield(widget=TinyMCE(
-                attrs={'cols': 110, 'rows': 50},
-            ))
-        return super(PageAdmin, self).formfield_for_dbfield(
-            db_field, **kwargs)
 
 admin.site.register(Page, PageAdmin)
 
