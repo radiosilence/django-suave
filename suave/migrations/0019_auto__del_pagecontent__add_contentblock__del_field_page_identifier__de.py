@@ -16,7 +16,7 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('identifier', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('body', self.gf('tinymce.models.HTMLField')(null=True, blank=True)),
+            ('body', self.gf('ckeditor.fields.RichTextField')(null=True, blank=True)),
         ))
         db.send_create_signal('suave', ['ContentBlock'])
 
@@ -30,7 +30,7 @@ class Migration(SchemaMigration):
     def backwards(self, orm):
         # Adding model 'PageContent'
         db.create_table('suave_pagecontent', (
-            ('body', self.gf('tinymce.models.HTMLField')(null=True, blank=True)),
+            ('body', self.gf('ckeditor.fields.RichTextField')(null=True, blank=True)),
             ('status', self.gf('model_utils.fields.StatusField')(default='draft', max_length=100, no_check_for_status=True, db_index=True)),
             ('updated', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
@@ -58,7 +58,7 @@ class Migration(SchemaMigration):
     models = {
         'suave.contentblock': {
             'Meta': {'object_name': 'ContentBlock'},
-            'body': ('tinymce.models.HTMLField', [], {'null': 'True', 'blank': 'True'}),
+            'body': ('ckeditor.fields.RichTextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'identifier': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255'})
@@ -104,8 +104,8 @@ class Migration(SchemaMigration):
             '_meta_keywords': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             '_page_title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'body': ('tinymce.models.HTMLField', [], {'null': 'True', 'blank': 'True'}),
-            'header_content': ('tinymce.models.HTMLField', [], {'null': 'True', 'blank': 'True'}),
+            'body': ('ckeditor.fields.RichTextField', [], {'null': 'True', 'blank': 'True'}),
+            'header_content': ('ckeditor.fields.RichTextField', [], {'null': 'True', 'blank': 'True'}),
             'header_image': ('sorl.thumbnail.fields.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'header_title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),

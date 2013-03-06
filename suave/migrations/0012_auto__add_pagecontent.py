@@ -17,7 +17,7 @@ class Migration(SchemaMigration):
             ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('identifier', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
             ('status', self.gf('model_utils.fields.StatusField')(default='draft', max_length=100, no_check_for_status=True, db_index=True)),
-            ('body', self.gf('tinymce.models.HTMLField')(null=True, blank=True)),
+            ('body', self.gf('ckeditor.fields.RichTextField')(null=True, blank=True)),
             ('page', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='content', null=True, to=orm['suave.Page'])),
         ))
         db.send_create_signal('suave', ['PageContent'])
@@ -95,7 +95,7 @@ class Migration(SchemaMigration):
             '_meta_keywords': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             '_page_title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'body': ('tinymce.models.HTMLField', [], {'null': 'True', 'blank': 'True'}),
+            'body': ('ckeditor.fields.RichTextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'identifier': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
@@ -114,7 +114,7 @@ class Migration(SchemaMigration):
         'suave.pagecontent': {
             'Meta': {'object_name': 'PageContent'},
             'added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'body': ('tinymce.models.HTMLField', [], {'null': 'True', 'blank': 'True'}),
+            'body': ('ckeditor.fields.RichTextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'identifier': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'order': ('django.db.models.fields.IntegerField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),

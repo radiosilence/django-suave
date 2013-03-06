@@ -32,7 +32,7 @@ class Migration(SchemaMigration):
             ('added', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('updated', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
             ('status', self.gf('model_utils.fields.StatusField')(default='draft', max_length=100, no_check_for_status=True)),
-            ('body', self.gf('tinymce.models.HTMLField')()),
+            ('body', self.gf('ckeditor.fields.RichTextField')()),
             ('slug', self.gf('django.db.models.fields.SlugField')(max_length=255)),
             ('template_override', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
             ('parent', self.gf('mptt.fields.TreeForeignKey')(blank=True, related_name='children', null=True, to=orm['suave.Page'])),
@@ -160,7 +160,7 @@ class Migration(SchemaMigration):
         'suave.page': {
             'Meta': {'ordering': "['order']", 'object_name': 'Page'},
             'added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'body': ('tinymce.models.HTMLField', [], {}),
+            'body': ('ckeditor.fields.RichTextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'identifier': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),

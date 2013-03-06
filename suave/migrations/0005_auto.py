@@ -87,7 +87,7 @@ class Migration(SchemaMigration):
         'suave.page': {
             'Meta': {'ordering': "['order']", 'object_name': 'Page'},
             'added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'body': ('tinymce.models.HTMLField', [], {'null': 'True', 'blank': 'True'}),
+            'body': ('ckeditor.fields.RichTextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'identifier': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),

@@ -21,13 +21,13 @@ class Migration(SchemaMigration):
     def backwards(self, orm):
 
         # Changing field 'ContentBlock.body'
-        db.alter_column(u'suave_contentblock', 'body', self.gf('tinymce.models.HTMLField')(null=True))
+        db.alter_column(u'suave_contentblock', 'body', self.gf('ckeditor.fields.RichTextField')(null=True))
 
         # Changing field 'Page.body'
-        db.alter_column(u'suave_page', 'body', self.gf('tinymce.models.HTMLField')(null=True))
+        db.alter_column(u'suave_page', 'body', self.gf('ckeditor.fields.RichTextField')(null=True))
 
         # Changing field 'Page.header_content'
-        db.alter_column(u'suave_page', 'header_content', self.gf('tinymce.models.HTMLField')(null=True))
+        db.alter_column(u'suave_page', 'header_content', self.gf('ckeditor.fields.RichTextField')(null=True))
 
     models = {
         u'suave.contentblock': {

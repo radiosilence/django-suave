@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
 
         # Changing field 'Page.body'
-        db.alter_column('suave_page', 'body', self.gf('tinymce.models.HTMLField')(null=True))
+        db.alter_column('suave_page', 'body', self.gf('ckeditor.fields.RichTextField')(null=True))
     def backwards(self, orm):
 
         # User chose to not deal with backwards NULL issues for 'Page.body'
@@ -69,7 +69,7 @@ class Migration(SchemaMigration):
         'suave.page': {
             'Meta': {'ordering': "['order']", 'object_name': 'Page'},
             'added': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'body': ('tinymce.models.HTMLField', [], {'null': 'True', 'blank': 'True'}),
+            'body': ('ckeditor.fields.RichTextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'identifier': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
